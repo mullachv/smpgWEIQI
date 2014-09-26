@@ -116,7 +116,7 @@ var gameLogic = (function () {
     // Changes all arr locations in board to '' (empty)
     function cleanBoard(board, arr) {
         var newboard = copyObject(board);
-        var i;
+        var i, row, col;
         for (i = 0; i < arr.length; i++) {
             row = arr[i][0];
             col = arr[i][1];
@@ -205,10 +205,6 @@ var gameLogic = (function () {
         }
         if (board === undefined) {
             board = createNewBoard();
-        }
-        // some special cases
-        if (passes < 0) {
-            return false;
         }
             
         var boardAfterMove = copyObject(board);
