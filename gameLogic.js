@@ -60,20 +60,18 @@ var isMoveOk = (function () {
         return JSON.parse(JSON.stringify(object));
     }
 
-    //
+    // Finds the existing set that contains oldarr and adds newarr to it
     function mergeSets(sets, newarr, oldarr) {
         var setsAfterMerge = sets;
         //iterate through sets
         var temp = [];
-        var i;
+        var i, i2;
         for (i = 0; i < setsAfterMerge.length; i++) {
             temp = setsAfterMerge[i];
-            if (temp.isArray()) {
-                for (i2 = 0; i2 < temp.length; i2++) {
-                    if (temp[i2] === oldarr) {
-                        temp.push(newarr);
-                        setsAfterMerge[i] = temp;
-                    }
+            for (i2 = 0; i2 < temp.length; i2++) {
+                if (JSON.stringify(temp[i2]) === JSON.stringify(oldarr)) {
+                    temp.push(newarr);
+                    setsAfterMerge[i] = temp;
                 }
             }
         }
@@ -93,18 +91,18 @@ var isMoveOk = (function () {
                 // add it to existing set if it's touching a stone
                 // in a previously explored location
                 if (board[row][col] === 'X') {
-                    if (board[row - 1][col] === board[row][col]) {
-                        setsX = mergeSets(setsX, [row, col], [row - 1, col]);
-                    } else if (board[row][col - 1] === board[row][col]) {
-                        setsX = mergeSets(setsX, [row, col], [row, col - 1]);
+                    if (row-1>=0 && board[row-1][col] === board[row][col]) {
+                        setsX = mergeSets(setsX, [row, col], [row-1, col]);
+                    } else if (col-1>=0 && board[row][col-1] === board[row][col]) {
+                        setsX = mergeSets(setsX, [row, col], [row, col-1]);
                     } else {
                         // no sets to merge with
                         setsX.push([[row, col]]);
                     }
                 } else if (board[row][col] === 'O') {
-                    if (board[row - 1][col] === board[row][col]) {
+                    if (row-1>=0 && board[row-1][col] === board[row][col]) {
                         setsO = mergeSets(setsO, [row, col], [row - 1, col]);
-                    } else if (board[row][col - 1] === board[row][col]) {
+                    } else if (col-1>=0 && board[row][col-1] === board[row][col]) {
                         setsO = mergeSets(setsO, [row, col], [row, col - 1]);
                     } else {
                         setsO.push([[row, col]]);
@@ -139,10 +137,10 @@ var isMoveOk = (function () {
             for (i2 = 0; i2 < tempset.length; i2++) {
                 var row = tempset[i2][0];
                 var col = tempset[i2][1];
-                if (board[row - 1][col] === '' ||
-                        board[row + 1][col] === '' ||
-                        board[row][col - 1] === '' ||
-                        board[row][col + 1] === '') {
+                if ((row-1>=0 && board[row-1][col] === '') ||
+                        (row+1<dim && board[row+1][col] === '') ||
+                        (col-1>=0 && board[row][col-1] === '') ||
+                        (col+1<dim && board[row][col+1] === '')) {
                     liberties++;
                     break;
                 }
@@ -167,28 +165,28 @@ var isMoveOk = (function () {
         // Iterate through the sets to find ones without liberties
         // First analyze the liberties of the opponent
         var result;
+        if (turn !== 0 && turn !== 1) {
+            throw Error('evaluateBoard: invalid turn value.');
+        }
         if (turn === 0) {
             result = getLiberties(boardAfterEval, white);
             capturedAfterEval.white = captured.white + result.captured;
             boardAfterEval = copyObject(result.board);
-            result = getLiberties(boardAfterEval, black);
-            capturedAfterEval.black = captured.black + result.captured;
-            boardAfterEval = copyObject(result.board);
-        } else if (turn === 1) {
-            result = getLiberties(boardAfterEval, black);
-            capturedAfterEval.black = captured.black + result.captured;
-            boardAfterEval = copyObject(result.board);
-            result = getLiberties(boardAfterEval, white);
-            capturedAfterEval.white = captured.white + result.captured;
-            boardAfterEval = copyObject(result.board);
-        } else {
-            throw Error('evaluateBoard: invalid turn value.');
         }
+        result = getLiberties(boardAfterEval, black);
+        capturedAfterEval.black = captured.black + result.captured;
+        boardAfterEval = copyObject(result.board);
+        if (turn === 1) {
+            result = getLiberties(boardAfterEval, black);
+            capturedAfterEval.black = captured.black + result.captured;
+            boardAfterEval = copyObject(result.board);
+        }
+        
         return {board: boardAfterEval, captured: capturedAfterEval};
     }
 
     // getWinner determines winner based on captured stones
-    function getWinner(board, captured) {
+    function getWinner(captured) {
         var winner = 'O';
         if (captured.black - captured.white === 0) {
             winner = '';
@@ -200,6 +198,21 @@ var isMoveOk = (function () {
 
     // returns state that should be produced by making move 'delta'
     function createMove(board, delta, captured, passes, turnIndexBeforeMove) {
+        // instantiate values if stateBeforeMove was {}
+        if (captured === undefined) {
+            captured = {black: 0, white: 0};
+        }
+        if (passes === undefined) {
+            passes = 0;
+        }
+        if (board === undefined) {
+            board = createNewBoard();
+        }
+        // some special cases
+        if (passes < 0) {
+            return false;
+        }
+            
         var boardAfterMove = copyObject(board);
         var passesAfterMove = passes;
         var capturedAfterMove = copyObject(captured);
@@ -209,11 +222,15 @@ var isMoveOk = (function () {
         if (row === -1 && col === -1) {
             // delta of {-1, -1} indicates a pass (no move made)
             passesAfterMove++;
+            if(passesAfterMove > 2) {
+                throw Error('Exceeded number of possible passes.');
+            }
         } else if (boardAfterMove[row][col] !== '') {
             // if space isn't '' then bad move
             throw Error('Space is not empty!');
         } else {
             // else make the move/change the board
+            // bad delta should automatically throw error
             boardAfterMove[row][col] = turnIndexBeforeMove === 0 ? 'X' : 'O';
             passesAfterMove = 0; //if a move is made, passes is reset
             // evaluate board to see if any players captured new pieces
@@ -225,7 +242,7 @@ var isMoveOk = (function () {
         var firstOperation; // Either endMatchScores or setTurn
         if (passesAfterMove === 2) {
             // 2 passes means players have decided to end game
-            var winner = getWinner(boardAfterMove, capturedAfterMove);
+            var winner = getWinner(capturedAfterMove);
             firstOperation = {endMatch: {endMatchScores:
                             (winner === 'X' ? [1, 0] : (winner === 'O' ? [0, 1] : [0, 0]))}};
         } else {
@@ -276,30 +293,12 @@ var isMoveOk = (function () {
             // deltaValue is the move being made
             var deltaValue = move[2].set.value;
 
-            // values from stateBeforeMove
-            var oldcaptured = stateBeforeMove.captured;
-            var oldpasses = stateBeforeMove.passes;
-            var oldboard = stateBeforeMove.board;
-
-            // instantiate values if stateBeforeMove was {}
-            if (oldcaptured === undefined) {
-                captured = {black: 0, white: 0};
-            }
-            if (oldpasses === undefined) {
-                passes = 0;
-            }
-            if (oldboard === undefined) {
-                board = createNewBoard();
-            }
-
-            // some special cases
-            if (oldpasses > 2 || oldpasses < 0) {
-                return false;
-            }
-
             // createMove will return the expected state
-            var expectedMove = createMove(oldboard, deltaValue,
-                    oldcaptured, oldpasses, turnIndexBeforeMove);
+            var expectedMove = createMove(stateBeforeMove.board,
+                    deltaValue,
+                    stateBeforeMove.captured,
+                    stateBeforeMove.passes,
+                    turnIndexBeforeMove);
             // which should match the passed 'move' object
             if (!isEqual(move, expectedMove)) {
                 return false;
@@ -311,5 +310,89 @@ var isMoveOk = (function () {
         return true;
     }
 
-    return isMoveOk;
-})();
+    // Returns an array of (stateBeforeMove, move, comment)
+    function getExampleMoves(initialTurnIndex, initialState, arrayOfRowColComment) {
+        var exampleMoves = [];
+        var state = initialState;
+        var turnIndex = initialTurnIndex;
+        for (var i = 0; i < arrayOfRowColComment.length; i++) {
+            var rowColComment = arrayOfRowColComment[i];
+            var move = createMove(state.board, rowColComment,
+                    state.captured, state.passes, turnIndex
+                            );
+            var stateAfterMove = {board: move[1].set.value,
+                delta: move[2].set.value,
+                captured: move[3].set.value,
+                passes: move[4].set.value
+            };
+            exampleMoves.push({
+                stateBeforeMove: state,
+                stateAfterMove: stateAfterMove,
+                turnIndexBeforeMove: turnIndex,
+                turnIndexAfterMove: 1 - turnIndex,
+                move: move,
+                comment: {end: rowColComment.comment}
+            });
+            state = stateAfterMove;
+            turnIndex = 1 - turnIndex;
+        }
+        return exampleMoves;
+    }
+    
+    // Simple game that shows a capture
+    function getExampleGame() {
+        return getExampleMoves(0, {}, [
+            {row: 0, col: 0, comment: "Black always starts. Starting at the corner is not usually a good idea because you have only 2 liberties available."},
+            {row: 0, col: 1, comment: "White places a stone next to black. Black still has one liberty at [1,0] so it is not captured."},
+            {row: 1, col: 1, comment: "Black now covers 2 of the white stone's liberties. The white stone still has one liberty at [0,2]."},
+            {row: 1, col: 2, comment: "White makes a poor move."},
+            {row: 0, col: 2, comment: "Black captures White's first stone by covering all its possible liberties."},
+            {row: -1, col: -1, comment: "White passes its turn by not playing. However, 2 consecutive passes are required to end a game."},
+            {row: 2, col: 2, comment: "Black can play anyway and continue the game."},
+            {row: -1, col: -1, comment: "White passes its turn again by not playing."},
+            {row: -1, col: -1, comment: "Black agrees to end the game by passing its turn."}
+        ]);
+    }
+    // A few riddles, even though game is not really deterministic
+    function getRiddles() {
+        var board1 = createNewBoard();
+        board1[0,1] = 'O';
+        board1[1] = ['X','X','O','X','','','','',''];
+        board1[2] = ['','O','X','O','','','','',''];
+        
+        var board2 = createNewBoard();
+        board2[0,1] = 'O';
+        board2[1] = ['O','X','O','','','','','',''];
+        board2[2] = ['O','X','O','','','','','',''];
+        
+        return [
+            getExampleMoves(0,
+                {
+                    board: board1,
+                    delta: {row: 2, col: 3},
+                    captured: {black: 0, white: 0},
+                    passes: 0
+                },
+                [
+                    {row: 0, col: 2, comment: "Find the position for Black that will capture a white piece."}
+                ]
+            ),
+            getExampleMoves(0,
+                {
+                    board: board2,
+                    delta: {row: 2, col: 2},
+                    captured: {black: 0, white: 0},
+                    passes: 0
+                },
+                [
+                    {row: 3, col: 1, comment: "Find the position for Black that will prevent white from capturing it in its next move."}
+                ]
+            )
+        ];
+    }
+
+
+    this.isMoveOk = isMoveOk;
+    this.getExampleGame = getExampleGame;
+    this.getRiddles = getRiddles;
+});
