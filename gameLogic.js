@@ -1,6 +1,6 @@
 'use strict'; //prints error as opposed to ignoring silently
 
-var isMoveOk = (function () {
+var gameLogic = (function () {
 
     var dim = 9; // size of weiqi table
 
@@ -62,16 +62,16 @@ var isMoveOk = (function () {
 
     // Finds the existing set that contains oldarr and adds newarr to it
     function mergeSets(sets, newarr, oldarr) {
-        var setsAfterMerge = sets;
+        var setsAfterMerge = copyObject(sets);
         //iterate through sets
         var temp = [];
         var i, i2;
         for (i = 0; i < setsAfterMerge.length; i++) {
-            temp = setsAfterMerge[i];
+            temp = copyObject(setsAfterMerge[i]);
             for (i2 = 0; i2 < temp.length; i2++) {
-                if (JSON.stringify(temp[i2]) === JSON.stringify(oldarr)) {
+                if (isEqual(temp[i2],oldarr)) {
                     temp.push(newarr);
-                    setsAfterMerge[i] = temp;
+                    setsAfterMerge[i] = copyObject(temp);
                 }
             }
         }
@@ -115,13 +115,14 @@ var isMoveOk = (function () {
 
     // Changes all arr locations in board to '' (empty)
     function cleanBoard(board, arr) {
+        var newboard = copyObject(board);
         var i;
         for (i = 0; i < arr.length; i++) {
             row = arr[i][0];
             col = arr[i][1];
-            board[row][col] = '';
+            newboard[row][col] = '';
         }
-        return board;
+        return newboard;
     }
 
     // For each set in forest, tries to find a liberty
@@ -165,9 +166,6 @@ var isMoveOk = (function () {
         // Iterate through the sets to find ones without liberties
         // First analyze the liberties of the opponent
         var result;
-        if (turn !== 0 && turn !== 1) {
-            throw Error('evaluateBoard: invalid turn value.');
-        }
         if (turn === 0) {
             result = getLiberties(boardAfterEval, white);
             capturedAfterEval.white = captured.white + result.captured;
@@ -303,7 +301,6 @@ var isMoveOk = (function () {
             if (!isEqual(move, expectedMove)) {
                 return false;
             }
-
         } catch (e) {
             return false;
         }
@@ -392,7 +389,8 @@ var isMoveOk = (function () {
     }
 
 
-    this.isMoveOk = isMoveOk;
-    this.getExampleGame = getExampleGame;
-    this.getRiddles = getRiddles;
-});
+    //this.isMoveOk = isMoveOk;
+    //this.getExampleGame = getExampleGame;
+    //this.getRiddles = getRiddles;
+    return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles};
+})();

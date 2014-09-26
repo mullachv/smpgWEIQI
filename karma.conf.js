@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '',
+    basePath: './',
 
 
     // frameworks to use
@@ -15,6 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'gameLogic.js',
       '*.js'
     ],
 
@@ -23,17 +24,19 @@ module.exports = function(config) {
     exclude: [
     ],
 
+    // test results reporter to use
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: ['progress','coverage'],
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+	'gameLogic.js': ['coverage']
     },
 
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+
 
 
     // web server port
@@ -48,6 +51,12 @@ module.exports = function(config) {
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
+    // optionally, configure the reporter
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
+
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
@@ -57,6 +66,13 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
 
+    plugins : [
+            'karma-chrome-launcher',
+            'karma-firefox-launcher',
+            'karma-jasmine',
+            'karma-coverage',
+            'karma-junit-reporter'
+            ],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

@@ -1,6 +1,4 @@
 describe("In this version of WEIQI ", function () {
-    var dim = 9; // size of weiqi table
-
     function expectMoveOk(turnIndexBeforeMove, stateBeforeMove, move) {
         expect(gameLogic.isMoveOk({
             turnIndexBeforeMove: turnIndexBeforeMove,
@@ -18,6 +16,7 @@ describe("In this version of WEIQI ", function () {
     }
 
     // Some helper functions
+    var dim = 9;
     // empty2D creates empty matrix given dimensions
     function empty2D(rows, cols) {
         var array = [], row = [];
@@ -100,8 +99,7 @@ describe("In this version of WEIQI ", function () {
             {set: {key: 'delta', value: delta}},
             {set: {key: 'captured', value: captured}}
         ]);
-    })
-            ;
+    });
 
     it("7. placing X in 0x0 from initial state is legal", function () {
         var setTurn = {setTurn: {turnIndex: 1}};
@@ -428,6 +426,103 @@ describe("In this version of WEIQI ", function () {
             {set: {key: 'passes', value: passes}}
         ]);
     });
+    
+    it("21. Tying is legal", function () {
+        var oldboard = empty2D(dim, dim);
+        oldboard[0][0] = 'X';
+
+        var setTurn = {endMatch: {endMatchScores: [0, 0]}};
+        var board = copyObject(oldboard);
+        var delta = {row: -1, col: -1};
+        var captured = {black: 1, white: 1};
+        var passes = 2;
+
+        expectMoveOk(0, {
+            board: oldboard,
+            delta: {row: -1, col: -1},
+            captured: {black: 1, white: 1},
+            passes: 1
+        }, [setTurn,
+            {set: {key: 'board', value: board}},
+            {set: {key: 'delta', value: delta}},
+            {set: {key: 'captured', value: captured}},
+            {set: {key: 'passes', value: passes}}
+        ]);
+    });
+
+    it("22. changing passes<0 is illegal", function () {
+        var oldboard = empty2D(dim, dim);
+        oldboard[0][0] = 'X';
+
+        var setTurn = {setTurn: {turnIndex: 0}};
+        var board = copyObject(oldboard);
+        board[0][1] = 'O';
+        var delta = {row: 0, col: 1};
+        var captured = {black: 0, white: 0};
+        var passes = -1;
+
+        expectIllegalMove(1, {
+            board: oldboard,
+            delta: {row: 0, col: 0},
+            captured: {black: 0, white: 0},
+            passes: 0
+        }, [setTurn,
+            {set: {key: 'board', value: board}},
+            {set: {key: 'delta', value: delta}},
+            {set: {key: 'captured', value: captured}},
+            {set: {key: 'passes', value: passes}}
+        ]);
+    });
+    
+    it("23. White wins after 2 passes is legal", function () {
+        var oldboard = empty2D(dim, dim);
+        oldboard[0][0] = 'X';
+
+        var setTurn = {endMatch: {endMatchScores: [0, 1]}};
+        var board = copyObject(oldboard);
+        var delta = {row: -1, col: -1};
+        var captured = {black: 1, white: 0};
+        var passes = 2;
+
+        expectMoveOk(0, {
+            board: oldboard,
+            delta: {row: -1, col: -1},
+            captured: {black: 1, white: 0},
+            passes: 1
+        }, [setTurn,
+            {set: {key: 'board', value: board}},
+            {set: {key: 'delta', value: delta}},
+            {set: {key: 'captured', value: captured}},
+            {set: {key: 'passes', value: passes}}
+        ]);
+    });
+    
+    it("24. Having black and white sets are legal", function () {
+        var oldboard = empty2D(dim, dim);
+        oldboard[0][0] = 'X';
+        oldboard[0][1] = 'X';
+        oldboard[1][1] = 'O';
+        oldboard[1][0] = 'O';
+
+        var setTurn = {setTurn: {turnIndex: 0}};
+        var board = copyObject(oldboard);
+        oldboard[2][1] = 'O';
+        var delta = {row: 2, col: 1};
+        var captured = {black: 0, white: 0};
+        var passes = 0;
+
+        expectMoveOk(1, {
+            board: oldboard,
+            delta: {row: 0, col: 1},
+            captured: {black: 0, white: 0},
+            passes: 0
+        }, [setTurn,
+            {set: {key: 'board', value: board}},
+            {set: {key: 'delta', value: delta}},
+            {set: {key: 'captured', value: captured}},
+            {set: {key: 'passes', value: passes}}
+        ]);
+    });
 
     function expectLegalHistoryThatEndsTheGame(history) {
         for (var i = 0; i < history.length; i++) {
@@ -438,11 +533,15 @@ describe("In this version of WEIQI ", function () {
         expect(history[history.length - 1].move[0].endMatch).toBeDefined();
     }
 
-    it("getExampleGame returns a legal history and the last move ends the game", function () {
-        var exampleGame = gameLogic.getExampleGame();
-        expect(exampleGame.length).toBe(9);
-        expectLegalHistoryThatEndsTheGame(exampleGame);
-    });
+    //it("21. getExampleGame returns a legal history and the last move ends the game", function () {
+    //    var exampleGame = gameLogic.getExampleGame();
+        //expect(exampleGame.length).toBe(9);
+        //expectLegalHistoryThatEndsTheGame(exampleGame);
+    //});
+    
+    //it("getRiddles is difficult to test because no deterministic scenarios", function() {
+    //    var riddles = gameLogic.getRiddles();
+    //});
     
     //No test cases for riddles because they are not deterministic scenarios
 
