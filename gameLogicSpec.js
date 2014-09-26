@@ -505,22 +505,21 @@ describe("In this version of WEIQI ", function () {
         var oldboard = empty2D(dim, dim);
         oldboard[0][0] = 'X';
         oldboard[0][1] = 'X';
-        oldboard[2][0] = 'X';
-        oldboard[3][0] = 'X';
-        oldboard[0][5] = 'O';
-        oldboard[0][6] = 'O';
-        oldboard[1][0] = 'O';
+        oldboard[1][0] = 'X';
+        oldboard[0][3] = 'O';
+        oldboard[0][4] = 'O';
+        oldboard[2][0] = 'O';
 
         var setTurn = {setTurn: {turnIndex: 0}};
         var board = copyObject(oldboard);
-        oldboard[2][0] = 'O';
-        var delta = {row: 2, col: 1};
+        board[3][0] = 'O';
+        var delta = {row: 3, col: 0};
         var captured = {black: 0, white: 0};
         var passes = 0;
 
-        expectIllegalMove(1, {
+        expectMoveOk(1, {
             board: oldboard,
-            delta: {row: 0, col: 1},
+            delta: {row: 0, col: 0},
             captured: {black: 0, white: 0},
             passes: 0
         }, [setTurn,
@@ -540,19 +539,15 @@ describe("In this version of WEIQI ", function () {
         expect(history[history.length - 1].move[0].endMatch).toBeDefined();
     }
 
-    // GetExampleGame FAILS but when I run
-    // gameLogic.js and then gameLogic.getExampleGame(), I get the correct objects
     it("21. getExampleGame returns a legal history and the last move ends the game", function () {
         var exampleGame = gameLogic.getExampleGame();
         expect(exampleGame.length).toBe(9);
-        //expectLegalHistoryThatEndsTheGame(exampleGame);
+        expectLegalHistoryThatEndsTheGame(exampleGame);
     });
     
-    // GetRiddles also FAILS even though running gameLogic.getRiddles() has no problems
-    it("getRiddles is difficult to test because no deterministic scenarios", function() {
+    it("22. getRiddles is difficult to test because no deterministic scenarios", function() {
         var riddles = gameLogic.getRiddles();
+        expect(riddles.length).toBe(2);
     });
-    
-    //No test cases for riddles because they are not deterministic scenarios
 
 });
