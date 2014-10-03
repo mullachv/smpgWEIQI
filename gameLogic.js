@@ -1,45 +1,13 @@
 'use strict'; //prints error as opposed to ignoring silently
 
-var gameLogic = (function () {
-
+angular.module('myApp.gameLogic', []).service('gameLogic', function() {
+    
     var dim = 9; // size of weiqi table
 
     // AngularJS isEqual code
     // https://docs.angularjs.org/api/ng/function/angular.equals
     function isEqual(object1, object2) {
-        if (object1 === object2) {
-            return true;
-        }
-        if (typeof object1 != 'object' && typeof object2 != 'object') {
-            return object1 == object2;
-        }
-        try {
-            var keys1 = Object.keys(object1);
-            var keys2 = Object.keys(object2);
-            var i, key;
-
-            if (keys1.length != keys2.length) {
-                return false;
-            }
-            //the same set of keys (although not necessarily the same order),
-            keys1.sort();
-            keys2.sort();
-            // key test
-            for (i = keys1.length - 1; i >= 0; i--) {
-                if (keys1[i] != keys2[i])
-                    return false;
-            }
-            // equivalent values for every corresponding key
-            for (i = keys1.length - 1; i >= 0; i--) {
-                key = keys1[i];
-                if (!isEqual(object1[key], object2[key])) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (e) {
-            return false;
-        }
+        return angular.equals(object1, object2)
     }
 
     // returns a new [empty] weiqi board
@@ -385,8 +353,8 @@ var gameLogic = (function () {
     }
 
 
-    //this.isMoveOk = isMoveOk;
-    //this.getExampleGame = getExampleGame;
-    //this.getRiddles = getRiddles;
-    return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles};
-})();
+    this.isMoveOk = isMoveOk;
+    this.getExampleGame = getExampleGame;
+    this.getRiddles = getRiddles;
+    //return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles};
+});
