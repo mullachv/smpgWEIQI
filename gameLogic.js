@@ -22,6 +22,9 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
             array.push(row.slice());
         return array;
     }
+    function getInitialBoard() {
+        return createNewBoard();
+    }
 
     // returns copy of JS object
     function copyObject(object) {
@@ -356,5 +359,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
     this.isMoveOk = isMoveOk;
     this.getExampleGame = getExampleGame;
     this.getRiddles = getRiddles;
+    this.getInitialBoard = getInitialBoard;
+    this.createMove = createMove;
     //return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles};
 });
