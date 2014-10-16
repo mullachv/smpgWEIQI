@@ -81,7 +81,7 @@ var isLocalTesting = $window.parent === $window;
         }
     };
     
-    scaleBodyService.scaleBody({width: 450, height: 450});
+    scaleBodyService.scaleBody({width: 495, height: 495});
     
     if (isLocalTesting) {
       game.isMoveOk = gameLogic.isMoveOk;
