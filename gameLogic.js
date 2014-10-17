@@ -1,7 +1,7 @@
 'use strict'; //prints error as opposed to ignoring silently
 
-angular.module('myApp.gameLogic', []).service('gameLogic', function() {
-    
+angular.module('myApp').service('gameLogic', function () {
+
     var dim = 9; // size of weiqi table
 
     // AngularJS isEqual code
@@ -40,7 +40,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         for (i = 0; i < setsAfterMerge.length; i++) {
             temp = copyObject(setsAfterMerge[i]);
             for (i2 = 0; i2 < temp.length; i2++) {
-                if (isEqual(temp[i2],oldarr)) {
+                if (isEqual(temp[i2], oldarr)) {
                     temp.push(newarr);
                     setsAfterMerge[i] = copyObject(temp);
                 }
@@ -49,9 +49,56 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         return setsAfterMerge;
     }
 
+    // Comes the two sets contains new and oldarr respectively together in sets
+    function unionSets(sets, newarr, oldarr) {
+        var setsAfterMerge = copyObject(sets);
+        //iterate through sets and find the index of the two sets to be merged
+        var ind1, ind2;
+        var i, i2;
+        for (i = 0; i < sets.length; i++) {
+            for (i2 = 0; i2 < sets[i].length; i2++) {
+                if (isEqual(sets[i][i2], newarr)) {
+                    ind1 = i;
+                } else if (isEqual(sets[i][i2], oldarr)) {
+                    ind2 = i;
+                }
+            }
+        }
+        //insert values in set1 to set2
+        for (i = 0; i < sets[ind1].length; i++) {
+            setsAfterMerge[ind2].push(sets[ind1][i]);
+        }
+        //remove set1 from sets
+        setsAfterMerge.splice(ind1, 1);
+        return setsAfterMerge;
+    }
+
+    // arrarr is an array of cells to add to whichever set contains oldarr
+    function addSet(sets, arrarr, oldarr) {
+        var setsAfterMerge = copyObject(sets);
+        //find location of oldarr in sets
+        var ind1;
+        var i, i2;
+        for (i = 0; i < sets.length; i++) {
+            for (i2 = 0; i2 < sets[i].length; i2++) {
+                if (isEqual(sets[i][i2], oldarr)) {
+                    ind1 = i;
+                    break;
+                }
+            }
+        }
+        for (i = 0; i < arrarr.length; i++) {
+            setsAfterMerge[ind1].push(arrarr[i]);
+        }
+        return setsAfterMerge;
+    }
+
     // needed by evaluateBoard
     // groups all contiguous stones as sets
     function getSets(board) {
+        var leaderX = createNewBoard();
+        var leaderO = createNewBoard();
+        var willadd = [];
         var setsX = []; // black sets
         var setsO = []; // white sets
         var row, col;
@@ -61,22 +108,64 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
                 // if it's a black stone
                 // add it to existing set if it's touching a stone
                 // in a previously explored location
+                willadd = [];
                 if (board[row][col] === 'X') {
-                    if (row-1>=0 && board[row-1][col] === board[row][col]) {
-                        setsX = mergeSets(setsX, [row, col], [row-1, col]);
-                    } else if (col-1>=0 && board[row][col-1] === board[row][col]) {
-                        setsX = mergeSets(setsX, [row, col], [row, col-1]);
+                    if (row + 1 < dim && board[row + 1][col] === board[row][col]) {
+                        if (leaderX[row + 1][col] === '') {
+                            willadd.push([row + 1, col]);
+                            leaderX[row + 1][col] = setsX.length;
+                        } else if (leaderX[row][col] === '') {
+                            setsX = mergeSets(setsX, [row, col], [row + 1, col]);
+                            leaderX[row][col] = leaderX[row + 1][col];
+                        } else {
+                            setsX = unionSets(setsX, [row, col], [row + 1, col]);
+                        }
+                    }
+                    if (col + 1 < dim && board[row][col + 1] === board[row][col]) {
+                        if (leaderX[row][col + 1] === '') {
+                            willadd.push([row, col + 1]);
+                            leaderX[row][col + 1] = setsX.length;
+                        } else if (leaderX[row][col] === '') {
+                            setsX = mergeSets(setsX, [row, col], [row, col + 1]);
+                            leaderX[row][col] = leaderX[row][col + 1];
+                        } else {
+                            setsX = unionSets(setsX, [row, col], [row, col + 1]);
+                        }
+                    }
+                    if (leaderX[row][col] === '') {
+                        willadd.push([row, col]);
+                        setsX.push(copyObject(willadd));
                     } else {
-                        // no sets to merge with
-                        setsX.push([[row, col]]);
+                        setsX = addSet(setsX, willadd, [row, col]);
                     }
                 } else if (board[row][col] === 'O') {
-                    if (row-1>=0 && board[row-1][col] === board[row][col]) {
-                        setsO = mergeSets(setsO, [row, col], [row - 1, col]);
-                    } else if (col-1>=0 && board[row][col-1] === board[row][col]) {
-                        setsO = mergeSets(setsO, [row, col], [row, col - 1]);
+                    if (row + 1 < dim && board[row + 1][col] === board[row][col]) {
+                        if (leaderO[row + 1][col] === '') {
+                            willadd.push([row + 1, col]);
+                            leaderO[row + 1][col] = setsO.length;
+                        } else if (leaderO[row][col] === '') {
+                            setsO = mergeSets(setsO, [row, col], [row + 1, col]);
+                            leaderO[row][col] = leaderO[row + 1][col];
+                        } else {
+                            setsO = unionSets(setsO, [row, col], [row + 1, col]);
+                        }
+                    }
+                    if (col + 1 < dim && board[row][col + 1] === board[row][col]) {
+                        if (leaderO[row][col + 1] === '') {
+                            willadd.push([row, col + 1]);
+                            leaderO[row][col + 1] = setsO.length;
+                        } else if (leaderO[row][col] === '') {
+                            setsO = mergeSets(setsO, [row, col], [row, col + 1]);
+                            leaderO[row][col] = leaderO[row][col + 1];
+                        } else {
+                            setsO = unionSets(setsO, [row, col], [row, col + 1]);
+                        }
+                    }
+                    if (leaderO[row][col] === '') {
+                        willadd.push([row, col]);
+                        setsO.push(copyObject(willadd));
                     } else {
-                        setsO.push([[row, col]]);
+                        setsO = addSet(setsO, willadd, [row, col]);
                     }
                 }
             }
@@ -109,10 +198,10 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
             for (i2 = 0; i2 < tempset.length; i2++) {
                 var row = tempset[i2][0];
                 var col = tempset[i2][1];
-                if ((row-1>=0 && board[row-1][col] === '') ||
-                        (row+1<dim && board[row+1][col] === '') ||
-                        (col-1>=0 && board[row][col-1] === '') ||
-                        (col+1<dim && board[row][col+1] === '')) {
+                if ((row - 1 >= 0 && board[row - 1][col] === '') ||
+                        (row + 1 < dim && board[row + 1][col] === '') ||
+                        (col - 1 >= 0 && board[row][col - 1] === '') ||
+                        (col + 1 < dim && board[row][col + 1] === '')) {
                     liberties++;
                     break;
                 }
@@ -150,7 +239,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
             capturedAfterEval.black = captured.black + result.captured;
             boardAfterEval = copyObject(result.board);
         }
-        
+
         return {board: boardAfterEval, captured: capturedAfterEval};
     }
 
@@ -165,6 +254,34 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         return winner;
     }
 
+    // returns a random move that the computer plays
+    function createComputerMove(board, captured, passes, turnIndexBeforeMove) {
+        var possibleMoves = [];
+        var i, j, delta, testmove;
+        for (i = 0; i < dim; i++) {
+            for (j = 0; j < dim; j++) {
+                delta = {row: i, col: j};
+                if (i > 0 && i + 1 < dim && j > 0 && j + 1 < dim &&
+                        (board[i - 1][j] === '' || board[i + 1][j] === '' ||
+                                board[i][j - 1] === '' || board[i][j + 1] === '')) {
+                    try {
+                        testmove = createMove(board, delta, captured, passes, turnIndexBeforeMove);
+                        possibleMoves.push(testmove);
+                    } catch (e) {
+                        // cell in that position was full
+                    }
+                }
+            }
+        }
+        if (possibleMoves.length === 0) {
+            delta = {row: -1, col: -1};
+            return createMove(board, delta, captured, passes + 1, turnIndexBeforeMove);
+        } else {
+            var randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+            return randomMove;
+        }
+    }
+
     // returns state that should be produced by making move 'delta'
     function createMove(board, delta, captured, passes, turnIndexBeforeMove) {
         // instantiate values if stateBeforeMove was {}
@@ -177,7 +294,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         if (board === undefined) {
             board = createNewBoard();
         }
-            
+
         var boardAfterMove = copyObject(board);
         var passesAfterMove = passes;
         var capturedAfterMove = copyObject(captured);
@@ -187,7 +304,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         if (row === -1 && col === -1) {
             // delta of {-1, -1} indicates a pass (no move made)
             passesAfterMove++;
-            if(passesAfterMove > 2) {
+            if (passesAfterMove > 2) {
                 throw Error('Exceeded number of possible passes.');
             }
         } else if (boardAfterMove[row][col] !== '') {
@@ -283,7 +400,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
             var rowColComment = arrayOfRowColComment[i];
             var move = createMove(state.board, rowColComment,
                     state.captured, state.passes, turnIndex
-                            );
+                    );
             var stateAfterMove = {board: move[1].set.value,
                 delta: move[2].set.value,
                 captured: move[3].set.value,
@@ -302,7 +419,7 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
         }
         return exampleMoves;
     }
-    
+
     // Simple game that shows a capture
     function getExampleGame() {
         return getExampleMoves(0, {}, [
@@ -320,38 +437,38 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
     // A few riddles, even though game is not really deterministic
     function getRiddles() {
         var board1 = createNewBoard();
-        board1[0,1] = 'O';
-        board1[1] = ['X','X','O','X','','','','',''];
-        board1[2] = ['','O','X','O','','','','',''];
-        
+        board1[0, 1] = 'O';
+        board1[1] = ['X', 'X', 'O', 'X', '', '', '', '', ''];
+        board1[2] = ['', 'O', 'X', 'O', '', '', '', '', ''];
+
         var board2 = createNewBoard();
-        board2[0,1] = 'O';
-        board2[1] = ['O','X','O','','','','','',''];
-        board2[2] = ['O','X','O','','','','','',''];
-        
+        board2[0, 1] = 'O';
+        board2[1] = ['O', 'X', 'O', '', '', '', '', '', ''];
+        board2[2] = ['O', 'X', 'O', '', '', '', '', '', ''];
+
         return [
             getExampleMoves(0,
-                {
-                    board: board1,
-                    delta: {row: 2, col: 3},
-                    captured: {black: 0, white: 0},
-                    passes: 0
-                },
-                [
-                    {row: 0, col: 2, comment: "Find the position for Black that will capture a white piece."}
-                ]
-            ),
+                    {
+                        board: board1,
+                        delta: {row: 2, col: 3},
+                        captured: {black: 0, white: 0},
+                        passes: 0
+                    },
+            [
+                {row: 0, col: 2, comment: "Find the position for Black that will capture a white piece."}
+            ]
+                    ),
             getExampleMoves(0,
-                {
-                    board: board2,
-                    delta: {row: 2, col: 2},
-                    captured: {black: 0, white: 0},
-                    passes: 0
-                },
-                [
-                    {row: 3, col: 1, comment: "Find the position for Black that will prevent white from capturing it in its next move."}
-                ]
-            )
+                    {
+                        board: board2,
+                        delta: {row: 2, col: 2},
+                        captured: {black: 0, white: 0},
+                        passes: 0
+                    },
+            [
+                {row: 3, col: 1, comment: "Find the position for Black that will prevent white from capturing it in its next move."}
+            ]
+                    )
         ];
     }
 
@@ -361,5 +478,6 @@ angular.module('myApp.gameLogic', []).service('gameLogic', function() {
     this.getRiddles = getRiddles;
     this.getInitialBoard = getInitialBoard;
     this.createMove = createMove;
+    this.createComputerMove = createComputerMove;
     //return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles};
 });
