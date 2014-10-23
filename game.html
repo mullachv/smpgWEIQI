@@ -24,16 +24,20 @@
   <link rel="stylesheet" type="text/css" href="game.css">
 </head>
 <body ng-controller="Ctrl">
+    <div ng-class="{goheader: true}">
+        <div ng-class="{blackwins: true}">
+            <b>BLACK</b> : {{captured.white}}
+        </div>
+        <div ng-class="{pass: true}"
+             ng-click="passClicked()">
+            <b>PASS</b> {{passes}}/2
+        </div>
+        <div ng-class="{whitewins: true}">
+            {{captured.black}} : <b>WHITE</b>
+        </div>
+    </div>
     <table id="gotable">
-    <tr>
-            Black: {{captured.white}}
-        <button ng-class="{gopass: true}"
-                ng-click="passClicked()">
-            CLICK TO PASS ({{passes}}/2)
-        </button>
-        White: {{captured.black}}
-    </tr>
-    <tr ng-repeat="row in board track by $index">
+        <tr ng-repeat="row in board track by $index">
         <td ng-repeat="cell in row track by $index"
             ng-class="{cell: true, r: $index < 8, b: $parent.$index < 8}"
             ng-click="cellClicked($parent.$index, $index)">
@@ -44,7 +48,5 @@
         </td>
     </tr>
 </table>
-
-
 </body>
 </html>

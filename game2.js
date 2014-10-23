@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('myApp', ['ngTouch']).controller('Ctrl', function (
-        $window, $scope, $log, $timeout,
+angular.module('myApp', ['ngDraggable']).controller('Ctrl', function (
+        $scope, $log, $timeout,
         gameService, scaleBodyService, gameLogic) {
 
     var moveAudio = new Audio('audio/move.wav');
@@ -28,6 +28,7 @@ angular.module('myApp', ['ngTouch']).controller('Ctrl', function (
             $scope.board = gameLogic.getInitialBoard();
             $scope.captured = {black: 0, white: 0};
             $scope.passes = 0;
+            $scope.notifications = "Nothing was dragged";
         } else {
             moveAudio.play();
         }
@@ -90,8 +91,26 @@ angular.module('myApp', ['ngTouch']).controller('Ctrl', function (
                 $scope.board[rrow][ccol] === '';
     };
 
-    scaleBodyService.scaleBody({width: 450, height: 480});
-
+    $scope.onDropComplete = function (data, event, row, col) {
+        $log.info("onDropComplete happened!", arguments);
+        $scope.notifications = "Dropped piece " + data + " in " + row + "x" + col;
+        $log.info($scope.isYourTurn);
+        if (!$scope.isYourTurn || data===2) {
+            $scope.notifications = "You can't use that piece.";
+            return;
+        }
+        try {
+            var delta = {row: row, col: col};
+            var move = gameLogic.createMove($scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
+            $scope.isYourTurn = false; // Prevent new move
+            gameService.makeMove(move);
+        } catch (e) {
+            $log.info(["Cannot make move:", row, col]);
+            return;
+        }
+      };
+    //scaleBodyService.scaleBody({width: 450, height: 475});
+    
     gameService.setGame({
         gameDeveloperEmail: "vangie.shue@gmail.com",
         minNumberOfPlayers: 2,

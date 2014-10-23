@@ -5,12 +5,15 @@
   //background-size: cover;
   background-size: 100%;
   background-repeat: no-repeat;
+  border-color: black;
+  border-radius: 1px;
 }
 
 body {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+  background-color: black;
 }
 .cell {
   text-align:center;
@@ -116,9 +119,66 @@ body {
     margin: 0px;
     padding: 0px;
 }
+.gosize {
+    width: 45px;
+    height: 45px;
+}
+.goheader {
+    width: 450px;
+    height: 30px;
+    font-family: "Helvetica";
+    font-size: 20px;
+    //border: 1px solid black;
+}
+.blackwins {
+    background-color: black;
+    color: white;
+    width: 165px;
+    height: 20px;
+    float: left;
+    text-align: left;
+    padding: 5px;
+}
+.pass {
+    background-color: red;
+    color: white;
+    width: 90px;
+    height: 20px;
+    float: left;
+    text-align: center;
+    padding: 5px;
+}
+.whitewins {
+    background-color: whitesmoke;
+    color: black;
+    width: 165px;
+    height: 20px;
+    float: left;
+    text-align: right;
+    padding: 5px;
+}
+.dragheader {
+    width: 450px;
+    margin-left: 170px;
+}
+.dragbody {
+    width: 450px;
+    height: 450px;
+    background-color: gainsboro;
+}
+
 .goimg {
     margin: 0px;
     padding: 0px;
     width: 90%;
     height: 90%;
+}
+
+.goframe {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: fixed!important;
 }
