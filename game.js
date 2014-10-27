@@ -72,11 +72,13 @@ angular.module('myApp', ['ngTouch']).controller('Ctrl', function (
         }
         try {
             var delta = {row: rrow, col: ccol};
+            //$log.info(["Board info:", $scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex]);
             var move = gameLogic.createMove($scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
             $scope.isYourTurn = false; // Prevent new move
             gameService.makeMove(move);
         } catch (e) {
-            $log.info(["Cannot make move:", rrow, ccol]);
+            $log.info(["Error: ", e]);
+            $log.info(["Cannot make move: ", rrow, ccol]);
             return;
         }
     };
@@ -90,10 +92,10 @@ angular.module('myApp', ['ngTouch']).controller('Ctrl', function (
                 $scope.board[rrow][ccol] === '';
     };
 
-    scaleBodyService.scaleBody({width: 450, height: 480});
+    scaleBodyService.scaleBody({width: 450, height: 500});
 
     gameService.setGame({
-        gameDeveloperEmail: "vangie.shue@gmail.com",
+        gameDeveloperEmail: "vangieshue@gmail.com",
         minNumberOfPlayers: 2,
         maxNumberOfPlayers: 2,
         exampleGame: gameLogic.getExampleGame(),

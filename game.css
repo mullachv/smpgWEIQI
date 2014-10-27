@@ -7,6 +7,7 @@
   background-repeat: no-repeat;
   border-color: black;
   border-radius: 1px;
+  cursor: crosshair;
 }
 
 body {
@@ -125,37 +126,58 @@ body {
 }
 .goheader {
     width: 450px;
-    height: 30px;
+    height: 50px;
     font-family: "Helvetica";
     font-size: 20px;
     //border: 1px solid black;
 }
-.blackwins {
-    background-color: black;
+.gowins {
+    background-color: grey;
     color: white;
     width: 165px;
-    height: 20px;
+    height: 40px;
     float: left;
     text-align: left;
     padding: 5px;
+    font-size: 25px;
+    line-height: 40px;
+    cursor: default;
+}
+.blackwins {
+    background-color: black;
+    color: white;
+    text-align: left;
 }
 .pass {
-    background-color: red;
+    background-color: grey;
     color: white;
-    width: 90px;
-    height: 20px;
+    width: 100px;
+    height: 50px;
     float: left;
     text-align: center;
-    padding: 5px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    line-height: 50px;
+    font-family: "PT Sans";
+    cursor: pointer;
+}
+.pass0 {
+    background-color: green;
+    //background-image: url('img/pass0.gif');
+}
+.pass1 {
+    background-color: darkred;
+    //background-image: url('img/pass1.gif');
+}
+.pass2 {
+    background-color: grey;
+    //background-image: url('img/pass2.gif');
+    cursor: default;
 }
 .whitewins {
     background-color: whitesmoke;
     color: black;
-    width: 165px;
-    height: 20px;
-    float: left;
     text-align: right;
-    padding: 5px;
 }
 .dragheader {
     width: 450px;

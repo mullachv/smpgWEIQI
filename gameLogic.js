@@ -49,7 +49,7 @@ angular.module('myApp').service('gameLogic', function () {
         return setsAfterMerge;
     }
 
-    // Comes the two sets contains new and oldarr respectively together in sets
+    // Combines the two sets contains newarr and oldarr respectively together into oldarr's set
     function unionSets(sets, newarr, oldarr) {
         var setsAfterMerge = copyObject(sets);
         //iterate through sets and find the index of the two sets to be merged
@@ -65,11 +65,13 @@ angular.module('myApp').service('gameLogic', function () {
             }
         }
         //insert values in set1 to set2
-        for (i = 0; i < sets[ind1].length; i++) {
-            setsAfterMerge[ind2].push(sets[ind1][i]);
+        if (sets[ind1] !== undefined) { //!!!!!!!!!!!!!!!!
+            for (i = 0; i < sets[ind1].length; i++) {
+                setsAfterMerge[ind2].push(sets[ind1][i]);
+            }
+            //remove set1 from sets
+            setsAfterMerge.splice(ind1, 1);
         }
-        //remove set1 from sets
-        setsAfterMerge.splice(ind1, 1);
         return setsAfterMerge;
     }
 
@@ -87,8 +89,12 @@ angular.module('myApp').service('gameLogic', function () {
                 }
             }
         }
-        for (i = 0; i < arrarr.length; i++) {
-            setsAfterMerge[ind1].push(arrarr[i]);
+        if(setsAfterMerge[ind1] !== undefined) { //!!!!!!
+            for (i = 0; i < arrarr.length; i++) {
+                setsAfterMerge[ind1].push(arrarr[i]);
+            }
+        } else {
+            setsAfterMerge.push(arrarr); //!!!!!!!
         }
         return setsAfterMerge;
     }
@@ -235,8 +241,8 @@ angular.module('myApp').service('gameLogic', function () {
         capturedAfterEval.black = captured.black + result.captured;
         boardAfterEval = copyObject(result.board);
         if (turn === 1) {
-            result = getLiberties(boardAfterEval, black);
-            capturedAfterEval.black = captured.black + result.captured;
+            result = getLiberties(boardAfterEval, white);
+            capturedAfterEval.white = captured.white + result.captured;
             boardAfterEval = copyObject(result.board);
         }
 
@@ -257,29 +263,35 @@ angular.module('myApp').service('gameLogic', function () {
     // returns a random move that the computer plays
     function createComputerMove(board, captured, passes, turnIndexBeforeMove) {
         var possibleMoves = [];
-        var i, j, delta, testmove;
+        var i, j, delta, testmove, newcaptured;
         for (i = 0; i < dim; i++) {
             for (j = 0; j < dim; j++) {
                 delta = {row: i, col: j};
-                if (i > 0 && i + 1 < dim && j > 0 && j + 1 < dim &&
-                        (board[i - 1][j] === '' || board[i + 1][j] === '' ||
-                                board[i][j - 1] === '' || board[i][j + 1] === '')) {
-                    try {
-                        testmove = createMove(board, delta, captured, passes, turnIndexBeforeMove);
-                        possibleMoves.push(testmove);
-                    } catch (e) {
-                        // cell in that position was full
+                try {
+                    testmove = createMove(board, delta, captured, passes, turnIndexBeforeMove);
+                    newcaptured = testmove[3].set.value;
+                    if ((turnIndexBeforeMove===0 && newcaptured.white>captured.white)
+                            || (turnIndexBeforeMove===1 && newcaptured.black>captured.black)) {
+                        return testmove;
                     }
+                    if (!(turnIndexBeforeMove===0 && newcaptured.black>captured.black)
+                            && !(turnIndexBeforeMove===1 && newcaptured.white>captured.white)) {
+                        possibleMoves.push(testmove);
+                    }
+                } catch (e) {
+                    // cell in that position was full
                 }
             }
         }
-        if (possibleMoves.length === 0) {
+        try {
             delta = {row: -1, col: -1};
-            return createMove(board, delta, captured, passes + 1, turnIndexBeforeMove);
-        } else {
+            testmove = createMove(board, delta, captured, passes, turnIndexBeforeMove);
+            possibleMoves.push(testmove);
+        } catch (e) {
+            // Couldn't add pass as a move?
+        }
             var randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
             return randomMove;
-        }
     }
 
     // returns state that should be produced by making move 'delta'
