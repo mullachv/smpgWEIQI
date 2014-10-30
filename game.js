@@ -35,7 +35,7 @@ angular.module('myApp', ['ngTouch']).controller('Ctrl', function (
                 params.yourPlayerIndex === params.turnIndexAfterMove;
         $scope.turnIndex = params.turnIndexAfterMove;
 
-        $log.info("getSets: ", JSON.stringify(gameLogic.getSets($scope.board)));
+        //$log.info("getSets: ", JSON.stringify(gameLogic.getSets($scope.board)));
 
         // Is it the computer's turn?
         if ($scope.isYourTurn && params.playersInfo[params.yourPlayerIndex].playerId === '') {
