@@ -8,6 +8,8 @@
   border-color: black;
   border-radius: 1px;
   cursor: crosshair;
+  height: 450px;
+  width: 450px;
 }
 
 body {
@@ -17,6 +19,7 @@ body {
   background-color: black;
 }
 .cell {
+    
   text-align:center;
   vertical-align: middle;
   font-family: "Helvetica";

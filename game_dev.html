@@ -50,23 +50,26 @@
             {{captured.black}} : <b>WHITE</b>
         </div>
     </div>
-    <table id="gotable">
+    <!--table id="gotable"-->
         <!--tr ng-repeat="row in board track by $index"-->
         <!--td ng-repeat="cell in row track by $index"
             ng-class="{cell: true, r: $index < 8, b: $parent.$index < 8}"
             ng-click="cellClicked($parent.$index, $index)">
             <div ng-class="{slowlyAppear: shouldSlowlyAppear($parent.$index, $index),
                         black: cell === 'X', white: cell === 'O'}"-->
-        <tr ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7, 8]">
-        <td ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7, 8]"
-            ng-class="{cell: true, r: col < 8, b: row < 8}"
-            ng-click="cellClicked(row, col)">
-            <div ng-class="{slowlyAppear: shouldSlowlyAppear(row, col),
+        <div id="gotable">
+        <div ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7, 8]">
+            <div ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7, 8]"
+                 ng-style="{left: (50*col) + 'px', top: (50*row) + 'px'}"
+                ng-class="{cell: true, r: col < 8, b: row < 8}"
+                ng-click="cellClicked(row, col)">
+                <div ng-class="{slowlyAppear: shouldSlowlyAppear(row, col),
                         black: board[row][col] === 'X', white: board[row][col] === 'O'}">
 
+                </div>
             </div>
-        </td>
-    </tr>
-</table>
+        </div>
+        </div>
+    <!--/table-->
 </body>
 </html>

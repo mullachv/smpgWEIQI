@@ -31,148 +31,59 @@ angular.module('myApp').service('gameLogic', function () {
         return JSON.parse(JSON.stringify(object));
     }
 
-    // Finds the existing set that contains oldarr and adds newarr to it
-    function mergeSets(sets, newarr, oldarr) {
-        var setsAfterMerge = copyObject(sets);
-        //iterate through sets
-        var temp = [];
-        var i, i2;
-        for (i = 0; i < setsAfterMerge.length; i++) {
-            temp = copyObject(setsAfterMerge[i]);
-            for (i2 = 0; i2 < temp.length; i2++) {
-                if (isEqual(temp[i2], oldarr)) {
-                    temp.push(newarr);
-                    setsAfterMerge[i] = copyObject(temp);
+    //Helper for getSets
+    function getWeb(color, row, col, board) {
+        var points = [];
+        var leader = createNewBoard();
+        
+        function tryPoints(row, col) {
+            points.push([row,col]);
+            leader[row][col]=color;
+            if(row-1>=0 && leader[row-1][col]==='' && board[row-1][col]===color) 
+            { tryPoints(row-1, col); }
+            if(row+1<dim && leader[row+1][col]==='' && board[row+1][col]===color) 
+            { tryPoints(row+1, col); }
+            if(col+1<dim && leader[row][col+1]==='' && board[row][col+1]===color) 
+            { tryPoints(row, col+1); }
+            if(col-1>=0 && leader[row][col-1]==='' && board[row][col-1]===color) 
+            { tryPoints(row, col-1); }
+        }
+        
+        tryPoints(row, col);
+        return {willadd: points, links: leader};
+    }
+    //Helper for getSets
+    function mergeBoards(leader, links) {
+        var finalleader = copyObject(leader);
+        var row, col;
+        for (row = 0; row < dim; row++) {
+            for (col = 0; col < dim; col++) {
+                if(links[row][col]!=='') {
+                    finalleader[row][col] = links[row][col];
                 }
             }
         }
-        return setsAfterMerge;
+        return finalleader;
     }
-
-    // Combines the two sets contains newarr and oldarr respectively together into oldarr's set
-    function unionSets(sets, newarr, oldarr) {
-        var setsAfterMerge = copyObject(sets);
-        //iterate through sets and find the index of the two sets to be merged
-        var ind1, ind2;
-        var i, i2;
-        for (i = 0; i < sets.length; i++) {
-            for (i2 = 0; i2 < sets[i].length; i2++) {
-                if (isEqual(sets[i][i2], newarr)) {
-                    ind1 = i;
-                } else if (isEqual(sets[i][i2], oldarr)) {
-                    ind2 = i;
-                }
-            }
-        }
-        //insert values in set1 to set2
-        if (sets[ind1] !== undefined) { //!!!!!!!!!!!!!!!!
-            for (i = 0; i < sets[ind1].length; i++) {
-                setsAfterMerge[ind2].push(sets[ind1][i]);
-            }
-            //remove set1 from sets
-            setsAfterMerge.splice(ind1, 1);
-        }
-        return setsAfterMerge;
-    }
-
-    // arrarr is an array of cells to add to whichever set contains oldarr
-    function addSet(sets, arrarr, oldarr) {
-        var setsAfterMerge = copyObject(sets);
-        //find location of oldarr in sets
-        var ind1;
-        var i, i2;
-        for (i = 0; i < sets.length; i++) {
-            for (i2 = 0; i2 < sets[i].length; i2++) {
-                if (isEqual(sets[i][i2], oldarr)) {
-                    ind1 = i;
-                    break;
-                }
-            }
-        }
-        if(setsAfterMerge[ind1] !== undefined) { //!!!!!!
-            for (i = 0; i < arrarr.length; i++) {
-                setsAfterMerge[ind1].push(arrarr[i]);
-            }
-        } else {
-            setsAfterMerge.push(arrarr); //!!!!!!!
-        }
-        return setsAfterMerge;
-    }
-
     // needed by evaluateBoard
     // groups all contiguous stones as sets
     function getSets(board) {
         var leaderX = createNewBoard();
         var leaderO = createNewBoard();
-        var willadd = [];
         var setsX = []; // black sets
         var setsO = []; // white sets
         var row, col;
-        // iterate through board
+        var connectInfo;
         for (row = 0; row < dim; row++) {
             for (col = 0; col < dim; col++) {
-                // if it's a black stone
-                // add it to existing set if it's touching a stone
-                // in a previously explored location
-                willadd = [];
-                if (board[row][col] === 'X') {
-                    if (row + 1 < dim && board[row + 1][col] === board[row][col]) {
-                        if (leaderX[row + 1][col] === '') {
-                            willadd.push([row + 1, col]);
-                            leaderX[row + 1][col] = setsX.length;
-                        } else if (leaderX[row][col] === '') {
-                            setsX = mergeSets(setsX, [row, col], [row + 1, col]);
-                            leaderX[row][col] = leaderX[row + 1][col];
-                        } else {
-                            setsX = unionSets(setsX, [row, col], [row + 1, col]);
-                        }
-                    }
-                    if (col + 1 < dim && board[row][col + 1] === board[row][col]) {
-                        if (leaderX[row][col + 1] === '') {
-                            willadd.push([row, col + 1]);
-                            leaderX[row][col + 1] = setsX.length;
-                        } else if (leaderX[row][col] === '') {
-                            setsX = mergeSets(setsX, [row, col], [row, col + 1]);
-                            leaderX[row][col] = leaderX[row][col + 1];
-                        } else {
-                            setsX = unionSets(setsX, [row, col], [row, col + 1]);
-                        }
-                    }
-                    if (leaderX[row][col] === '') {
-                        willadd.push([row, col]);
-                        setsX.push(copyObject(willadd));
-                    } else {
-                        setsX = addSet(setsX, willadd, [row, col]);
-                    }
-                } else if (board[row][col] === 'O') {
-                    if (row + 1 < dim && board[row + 1][col] === board[row][col]) {
-                        if (leaderO[row + 1][col] === '') {
-                            willadd.push([row + 1, col]);
-                            leaderO[row + 1][col] = setsO.length;
-                        } else if (leaderO[row][col] === '') {
-                            setsO = mergeSets(setsO, [row, col], [row + 1, col]);
-                            leaderO[row][col] = leaderO[row + 1][col];
-                        } else {
-                            setsO = unionSets(setsO, [row, col], [row + 1, col]);
-                        }
-                    }
-                    if (col + 1 < dim && board[row][col + 1] === board[row][col]) {
-                        if (leaderO[row][col + 1] === '') {
-                            willadd.push([row, col + 1]);
-                            leaderO[row][col + 1] = setsO.length;
-                        } else if (leaderO[row][col] === '') {
-                            setsO = mergeSets(setsO, [row, col], [row, col + 1]);
-                            leaderO[row][col] = leaderO[row][col + 1];
-                        } else {
-                            setsO = unionSets(setsO, [row, col], [row, col + 1]);
-                        }
-                    }
-                    if (leaderO[row][col] === '') {
-                        willadd.push([row, col]);
-                        setsO.push(copyObject(willadd));
-                    } else {
-                        setsO = addSet(setsO, willadd, [row, col]);
-                    }
+                if(board[row][col]==='X' && leaderX[row][col]==='') {
+                    connectInfo=getWeb('X', row, col, board);
+                    setsX.push(copyObject(connectInfo.willadd));
+                    leaderX = mergeBoards(leaderX, connectInfo.links);
+                } else if(board[row][col]==='O' && leaderO[row][col]==='') {
+                    connectInfo=getWeb('O', row, col, board);
+                    setsO.push(copyObject(connectInfo.willadd));
+                    leaderO = mergeBoards(leaderO, connectInfo.links);
                 }
             }
         }
@@ -228,7 +139,7 @@ angular.module('myApp').service('gameLogic', function () {
         var forest = getSets(board);
         var black = forest.black;
         var white = forest.white;
-
+        
         // Iterate through the sets to find ones without liberties
         // First analyze the liberties of the opponent
         var result;
@@ -491,5 +402,7 @@ angular.module('myApp').service('gameLogic', function () {
     this.getInitialBoard = getInitialBoard;
     this.createMove = createMove;
     this.createComputerMove = createComputerMove;
+    
+    this.getSets = getSets;
     //return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles};
 });
