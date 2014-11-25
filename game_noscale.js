@@ -35,7 +35,7 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl', function (
         $scope.isYourTurn = params.turnIndexAfterMove >= 0 &&
                 params.yourPlayerIndex === params.turnIndexAfterMove;
         $scope.turnIndex = params.turnIndexAfterMove;
-        $log.info("updateUI: ", $scope.turnIndex);
+        //$log.info("updateUI: ", $scope.turnIndex);
 
         // Is it the computer's turn?
         if ($scope.isYourTurn && params.playersInfo[params.yourPlayerIndex].playerId === '') {
