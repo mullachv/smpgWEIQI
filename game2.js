@@ -2,10 +2,12 @@
 
 angular.module('myApp', ['ngDraggable']).controller('Ctrl', function (
         $scope, $log, $timeout,
-        gameService, scaleBodyService, gameLogic) {
+        gameService, scaleBodyService, gameLogic, resizeGameAreaService) {
 
     var moveAudio = new Audio('audio/move.wav');
     moveAudio.load();
+
+    resizeGameAreaService.setWidthToHeight(0.9);
 
     function sendComputerMove() {
         gameService.makeMove(
@@ -92,8 +94,12 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl', function (
     };
 
     $scope.onDropComplete = function (data, event, row, col) {
-        $log.info("onDropComplete happened!", arguments);
-        $scope.notifications = "Dropped piece " + data + " in " + row + "x" + col;
+       // $log.info("onDropComplete happened!", arguments);
+        //$scope.notifications = "Dropped piece " + data + " in " + row + "x" + col;
+        console.log ("data:", data);
+        console.log ("event:", event);
+        console.log ("row:", row);
+        console.log ("col:", col);
         $log.info($scope.isYourTurn);
         if (!$scope.isYourTurn || data===2) {
             $scope.notifications = "You can't use that piece.";
@@ -110,7 +116,7 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl', function (
         }
       };
     //scaleBodyService.scaleBody({width: 450, height: 475});
-    
+
     gameService.setGame({
         gameDeveloperEmail: "vangie.shue@gmail.com",
         minNumberOfPlayers: 2,

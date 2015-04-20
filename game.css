@@ -1,17 +1,19 @@
 #gotable {
   border-collapse: collapse;
-  background-color: rgba(212, 160, 72, 1);
+  background-color: black;
   background-image: url('img/board.png');
-  //background-size: cover;
-  background-size: 100%;
+  /*background-size: cover;*/
+  background-size: 80%;
   background-repeat: no-repeat;
   border-color: black;
-  border-radius: 1px;
-  cursor: crosshair;
-  height: 450px;
-  width: 450px;
+  border-radius: 1%;
+  height: 100%;
+  width: 100%;
 }
 
+#pieceToDrag {
+    width : 20%;
+}
 body {
   margin: 0px;
   padding: 0px;
@@ -23,12 +25,10 @@ body {
   text-align:center;
   vertical-align: middle;
   font-family: "Helvetica";
-  font-size: 30pt;
-  width: 50px;
-  height: 50px;
+  font-size: 7%;
+  width: 10%;
+  height: 10%;
   border: none;
-  margin: 0px;
-  padding: 0px;
 }
 .r {
   //border-right: 3pt solid;
@@ -70,10 +70,9 @@ body {
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Verdana;
-	font-size:17px;
-	padding:7px 24px;
+	font-size:5%;
+	padding:2% 6%;
 	text-decoration:none;
-	text-shadow:0px 2px 0px #852c2c;
 }
 .gopass {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #800909), color-stop(1, #e64040));
@@ -88,7 +87,7 @@ body {
 }
 .gopass:active {
 	position:relative;
-	top:1px;
+	top:0.1%;
 }
 /*
 //Circle pieces
@@ -98,17 +97,15 @@ body {
 /*    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
 }
 .black {
-    //width: 100px;
+/*    //width: 100px;
     //height: 100px;
     //background: rgba(53, 53, 53, 1);
-    //border: 3px solid black;
+    //border: 3px solid black;*/
     background-image: url('img/X.gif');
     background-size: cover;
     background-repeat: no-repeat;
     width: 90%;
     height: 90%;
-    margin: 0px;
-    padding: 0px;
 }
 .white {
     //width: 75%;
@@ -124,26 +121,25 @@ body {
     padding: 0px;
 }
 .gosize {
-    width: 45px;
-    height: 45px;
+    width: 10%;
+    height: 10%;
 }
 .goheader {
-    width: 450px;
-    height: 50px;
+    width: 100%;
+    height: 10%;
     font-family: "Helvetica";
-    font-size: 20px;
-    //border: 1px solid black;
+    font-size: 10%;
 }
 .gowins {
     background-color: grey;
     color: white;
-    width: 165px;
-    height: 40px;
+    width: 30%;
+    height: 10%;
     float: left;
     text-align: left;
-    padding: 5px;
-    font-size: 25px;
-    line-height: 40px;
+    padding: 1%;
+    font-size: 5%;
+    line-height: 5%;
     cursor: default;
 }
 .blackwins {
@@ -154,27 +150,27 @@ body {
 .pass {
     background-color: grey;
     color: white;
-    width: 100px;
-    height: 50px;
+    width: 20%;
+    height: 5%;
     float: left;
     text-align: center;
     background-size: cover;
     background-repeat: no-repeat;
-    line-height: 50px;
+    line-height: 5%;
     font-family: "PT Sans";
     cursor: pointer;
 }
 .pass0 {
     background-color: green;
-    //background-image: url('img/pass0.gif');
+    background-image: url('img/pass0.gif');
 }
 .pass1 {
     background-color: darkred;
-    //background-image: url('img/pass1.gif');
+    background-image: url('img/pass1.gif');
 }
 .pass2 {
     background-color: grey;
-    //background-image: url('img/pass2.gif');
+    background-image: url('img/pass2.gif');
     cursor: default;
 }
 .whitewins {
@@ -183,12 +179,12 @@ body {
     text-align: right;
 }
 .dragheader {
-    width: 450px;
-    margin-left: 170px;
+    width: 50%;
+    margin-left: 30%;
 }
 .dragbody {
-    width: 450px;
-    height: 450px;
+    width: 90%;
+    height: 90%;
     background-color: gainsboro;
 }
 

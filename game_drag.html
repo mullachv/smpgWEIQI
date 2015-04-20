@@ -14,6 +14,7 @@
   
   <script src="game2.js"></script>
   <script src="gameLogic.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/resizeGameAreaService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/scaleBodyService.js"></script>
@@ -22,6 +23,7 @@
   <link rel="stylesheet" type="text/css" href="game.css">
 </head>
 <body ng-cloak ng-controller="Ctrl">
+<div id="gameArea">
     <div class="goheader">
         <center>
             Black: {{captured.white}}
@@ -34,8 +36,7 @@
         </center>
     </div>
     <div class="dragheader">
-        <img ng-drag="true" ng-drag-data="1" src="img/X.gif" />
-        <img ng-drag="true" ng-drag-data="2" src="img/O.gif" />
+        <img id = "pieceToDrag" ng-drag="true" ng-drag-data="1" src="img/X.gif" />
     </div>
     <table id="gotable">
         <tr ng-repeat="row in board track by $index">
@@ -50,5 +51,6 @@
             </td>
         </tr>
     </table>
+    </div>
 </body>
 </html>
