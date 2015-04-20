@@ -55,7 +55,7 @@ body {
   to {opacity: 1;}
 }
 
-//Pass button
+
 .gopass {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e64040), color-stop(1, #800909));
 	background:-moz-linear-gradient(top, #e64040 5%, #800909 100%);
@@ -90,12 +90,12 @@ body {
 	position:relative;
 	top:1px;
 }
-
+/*
 //Circle pieces
-//Referred from: http://jsfiddle.net/thirtydot/JJytE/1170/
+//Referred from: http://jsfiddle.net/thirtydot/JJytE/1170/*/
 .circleBase {
     border-radius: 50%;
-    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+/*    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
 }
 .black {
     //width: 100px;
