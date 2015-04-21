@@ -26,10 +26,8 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
 		// Center point in gameArea
         var x = clientX - gameArea.offsetLeft;
         var y = clientY - boardArea.offsetTop;
-		console.log("x=" + x);
-		console.log("y=" + y);
 		// Is outside gameArea?
-        if (x < 0 || x >= gameArea.clientWidth || y < 0 || y >= gameArea.clientHeight) {
+        if (x < 0 || x >= gameArea.clientWidth || y < 0 || y >= boardArea.clientHeight) {
           draggingLines.style.displagy = "none";
 		  clickToDragPiece.style.display = "none";
           return;
