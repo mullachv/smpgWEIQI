@@ -20,13 +20,11 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
 		//var clickToDragPiece = document.getElementById("clickToDragPiece");
 		var gameArea = document.getElementById("gameArea");
 		var boardArea = document.getElementById("boardArea");
-		console.log(boardArea);
-		console.log(boardArea.clientWidth);
-		console.log(boardArea.clientHeight);
+		
 		// Center point in gameArea
         var x = clientX - gameArea.offsetLeft;
-        var y = clientY - boardArea.offsetTop;
-		// Is outside gameArea?
+        var y = clientY - gameArea.offsetTop;
+		// Is outside boardArea?
         if (x < 0 || x >= gameArea.clientWidth || y < 0 || y >= boardArea.clientHeight) {
           draggingLines.style.displagy = "none";
 		  clickToDragPiece.style.display = "none";
