@@ -3,7 +3,6 @@
 angular.module('myApp').service('gameLogic', function () {
 
     var dim = 9; // size of weiqi table
-
     // AngularJS isEqual code
     // https://docs.angularjs.org/api/ng/function/angular.equals
     function isEqual(object1, object2) {
@@ -172,14 +171,14 @@ angular.module('myApp').service('gameLogic', function () {
     }
 
     // returns a random move that the computer plays
-    function createComputerMove(board, captured, passes, turnIndexBeforeMove) {
+    function createComputerMove(boardbeforeMove, board, captured, passes, turnIndexBeforeMove) {
         var possibleMoves = [];
         var i, j, delta, testmove, newcaptured;
         for (i = 0; i < dim; i++) {
             for (j = 0; j < dim; j++) {
                 delta = {row: i, col: j};
                 try {
-                    testmove = createMove(board, delta, captured, passes, turnIndexBeforeMove);
+                    testmove = createMove(boardbeforeMove, board, delta, captured, passes, turnIndexBeforeMove);
                     newcaptured = testmove[3].set.value;
                     if ((turnIndexBeforeMove===0 && newcaptured.white>captured.white)
                             || (turnIndexBeforeMove===1 && newcaptured.black>captured.black)) {
@@ -196,7 +195,7 @@ angular.module('myApp').service('gameLogic', function () {
         }
         try {
             delta = {row: -1, col: -1};
-            testmove = createMove(board, delta, captured, passes, turnIndexBeforeMove);
+            testmove = createMove(boardbeforeMove, board, delta, captured, passes, turnIndexBeforeMove);
             possibleMoves.push(testmove);
         } catch (e) {
             // Couldn't add pass as a move?
@@ -217,7 +216,7 @@ angular.module('myApp').service('gameLogic', function () {
     }
 
     // returns state that should be produced by making move 'delta'
-    function createMove(board, delta, captured, passes, turnIndexBeforeMove) {
+    function createMove(boardbeforeMove, board, delta, captured, passes, turnIndexBeforeMove) {
         // instantiate values if stateBeforeMove was {}
         
         if (captured === undefined) {
@@ -229,6 +228,9 @@ angular.module('myApp').service('gameLogic', function () {
         if (board === undefined) {
             board = createNewBoard();
         }
+
+        if (boardbeforeMove === undefined)
+            boardbeforeMove = createNewBoard ();
 
         var setnumBefore, setnumAfter;
 
@@ -264,6 +266,9 @@ angular.module('myApp').service('gameLogic', function () {
 
         if (setnumAfter < setnumBefore)
             throw Error ('you can not suicide.');
+
+        if (angular.equals (boardbeforeMove, boardAfterMove))
+            throw Error ("don’t allow a move that brings the game back to stateBeforeMove.");
 
         var firstOperation; // Either endMatchScores or setTurn
         if (passesAfterMove === 2) {
@@ -320,7 +325,7 @@ angular.module('myApp').service('gameLogic', function () {
             var deltaValue = move[2].set.value;
 
             // createMove will return the expected state
-            var expectedMove = createMove(stateBeforeMove.board,
+            var expectedMove = createMove(stateBeforeMove.boardbeforeMove, stateBeforeMove.board,
                     deltaValue,
                     stateBeforeMove.captured,
                     stateBeforeMove.passes,
@@ -342,7 +347,7 @@ angular.module('myApp').service('gameLogic', function () {
         var turnIndex = initialTurnIndex;
         for (var i = 0; i < arrayOfRowColComment.length; i++) {
             var rowColComment = arrayOfRowColComment[i];
-            var move = createMove(state.board, rowColComment,
+            var move = createMove(state.boardbeforeMove, state.board, rowColComment,
                     state.captured, state.passes, turnIndex
                     );
             var stateAfterMove = {board: move[1].set.value,

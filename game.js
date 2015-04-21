@@ -93,7 +93,7 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
 
     function sendComputerMove() {
         gameService.makeMove(
-                gameLogic.createComputerMove($scope.board,
+                gameLogic.createComputerMove($scope.boardbeforeMove, $scope.board,
                         $scope.captured,
                         $scope.passes,
                         $scope.turnIndex)
@@ -142,7 +142,8 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
         }
         try {
             var delta = {row: -1, col: -1};
-            var move = gameLogic.createMove($scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
+            var move = gameLogic.createMove($scope.boardbeforeMove, $scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
+             $scope.boardbeforeMove = $scope.board;
             $scope.isYourTurn = false; // Prevent new move
             gameService.makeMove(move);
         } catch (e) {
@@ -158,7 +159,8 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
         }
         try {
             var delta = {row: rrow, col: ccol};
-            var move = gameLogic.createMove($scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
+            var move = gameLogic.createMove($scope.boardbeforeMove, $scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
+            $scope.boardbeforeMove = $scope.board;
             $scope.isYourTurn = false; // Prevent new move
             gameService.makeMove(move);
         } catch (e) {
@@ -186,7 +188,8 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
         }
         try {
             var delta = {row: row, col: col};
-            var move = gameLogic.createMove($scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
+            var move = gameLogic.createMove($scope.boardbeforeMove, $scope.board, delta, $scope.captured, $scope.passes, $scope.turnIndex);
+            $scope.boardbeforeMove = $scope.board;
             $scope.isYourTurn = false; // Prevent new move
             gameService.makeMove(move);
         } catch (e) {
