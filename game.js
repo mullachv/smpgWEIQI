@@ -66,7 +66,7 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
 	}
 	function getSquareTopLeft(row, col) {
         var size = getSquareWidthHeight();
-        return {top: document.getElementById("boardArea").offsetTop + row * size.height, left: col * size.width}
+        return {top: row * size.height, left: col * size.width}
     }
 	function getSquareWidthHeight() {
 		var boardArea = document.getElementById("boardArea");
@@ -77,7 +77,6 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
     }
     function getSquareCenterXY(row, col) {
         var size = getSquareWidthHeight();
-		var boardArea = document.getElementById("boardArea");
         return {
 			x: col * size.width + size.width / 2,
 			y: row * size.height + size.height / 2
