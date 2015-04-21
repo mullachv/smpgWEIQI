@@ -72,7 +72,7 @@ angular.module('myApp').service('gameLogic', function () {
         var leaderO = createNewBoard();
         var setsX = []; // black sets
         var setsO = []; // white sets
-        var row, col; 
+        var row, col;
         var connectInfo;
         for (row = 0; row < dim; row++) {
             for (col = 0; col < dim; col++) {
@@ -205,9 +205,21 @@ angular.module('myApp').service('gameLogic', function () {
             return randomMove;
     }
 
+    function getboardNum (board, turnIndex) {
+        var sum = 0;
+        var i, j;
+        var color = turnIndex ? 'O' : 'X';
+        for (i = 0; i < dim; i ++)
+            for (j = 0; j < dim; j ++)
+                if (board [i][j] === color)
+                    sum ++;
+        return sum;
+    }
+
     // returns state that should be produced by making move 'delta'
     function createMove(board, delta, captured, passes, turnIndexBeforeMove) {
         // instantiate values if stateBeforeMove was {}
+        
         if (captured === undefined) {
             captured = {black: 0, white: 0};
         }
@@ -217,6 +229,10 @@ angular.module('myApp').service('gameLogic', function () {
         if (board === undefined) {
             board = createNewBoard();
         }
+
+        var setnumBefore, setnumAfter;
+
+        setnumBefore = getboardNum (board, turnIndexBeforeMove);
 
         var boardAfterMove = copyObject(board);
         var passesAfterMove = passes;
@@ -243,6 +259,11 @@ angular.module('myApp').service('gameLogic', function () {
             boardAfterMove = stateAfterEval.board;
             capturedAfterMove = stateAfterEval.captured;
         }
+
+        setnumAfter = getboardNum (boardAfterMove, turnIndexBeforeMove);
+
+        if (setnumAfter < setnumBefore)
+            throw Error ('you can not suicide.');
 
         var firstOperation; // Either endMatchScores or setTurn
         if (passesAfterMove === 2) {
