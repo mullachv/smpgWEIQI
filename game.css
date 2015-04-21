@@ -1,34 +1,29 @@
 #gotable {
   border-collapse: collapse;
-  background-color: white;
+  background-color: rgba(212, 160, 72, 1);
   background-image: url('img/board.png');
-  /*background-size: cover;*/
-  background-size: 80%;
+  //background-size: cover;
+  background-size: 100%;
   background-repeat: no-repeat;
   border-color: black;
-  border-radius: 1%;
-  height: 100%;
-  width: 100%;
+  border-radius: 1px;
+  cursor: crosshair;
+  height: 450px;
+  width: 450px;
 }
 
-#pieceToDrag {
-    width : 20%;
-}
-body {
-  margin: 0px;
-  padding: 0px;
-  overflow: hidden;
-  background-color: white;
-}
+
 .cell {
     
   text-align:center;
   vertical-align: middle;
   font-family: "Helvetica";
-  font-size: 7%;
-  width: 10%;
-  height: 10%;
+  font-size: 30pt;
+  width: 50px;
+  height: 50px;
   border: none;
+  margin: 0px;
+  padding: 0px;
 }
 .r {
   //border-right: 3pt solid;
@@ -55,7 +50,7 @@ body {
   to {opacity: 1;}
 }
 
-
+//Pass button
 .gopass {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e64040), color-stop(1, #800909));
 	background:-moz-linear-gradient(top, #e64040 5%, #800909 100%);
@@ -70,9 +65,10 @@ body {
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Verdana;
-	font-size:5%;
-	padding:2% 6%;
+	font-size:17px;
+	padding:7px 24px;
 	text-decoration:none;
+	text-shadow:0px 2px 0px #852c2c;
 }
 .gopass {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #800909), color-stop(1, #e64040));
@@ -87,25 +83,27 @@ body {
 }
 .gopass:active {
 	position:relative;
-	top:0.1%;
+	top:1px;
 }
-/*
+
 //Circle pieces
-//Referred from: http://jsfiddle.net/thirtydot/JJytE/1170/*/
+//Referred from: http://jsfiddle.net/thirtydot/JJytE/1170/
 .circleBase {
     border-radius: 50%;
-/*    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
 }
 .black {
-/*    //width: 100px;
+    //width: 100px;
     //height: 100px;
     //background: rgba(53, 53, 53, 1);
-    //border: 3px solid black;*/
+    //border: 3px solid black;
     background-image: url('img/X.gif');
     background-size: cover;
     background-repeat: no-repeat;
     width: 90%;
     height: 90%;
+    margin: 0px;
+    padding: 0px;
 }
 .white {
     //width: 75%;
@@ -121,25 +119,26 @@ body {
     padding: 0px;
 }
 .gosize {
-    width: 10%;
-    height: 10%;
+    width: 45px;
+    height: 45px;
 }
 .goheader {
-    width: 100%;
-    height: 10%;
+    width: 450px;
+    height: 50px;
     font-family: "Helvetica";
-    font-size: 10%;
+    font-size: 20px;
+    //border: 1px solid black;
 }
 .gowins {
     background-color: grey;
     color: white;
-    width: 30%;
-    height: 10%;
+    width: 165px;
+    height: 40px;
     float: left;
     text-align: left;
-    padding: 1%;
-    font-size: 5%;
-    line-height: 5%;
+    padding: 5px;
+    font-size: 25px;
+    line-height: 40px;
     cursor: default;
 }
 .blackwins {
@@ -150,27 +149,27 @@ body {
 .pass {
     background-color: grey;
     color: white;
-    width: 20%;
-    height: 5%;
+    width: 100px;
+    height: 50px;
     float: left;
     text-align: center;
     background-size: cover;
     background-repeat: no-repeat;
-    line-height: 5%;
+    line-height: 50px;
     font-family: "PT Sans";
     cursor: pointer;
 }
 .pass0 {
     background-color: green;
-    background-image: url('img/pass0.gif');
+    //background-image: url('img/pass0.gif');
 }
 .pass1 {
     background-color: darkred;
-    background-image: url('img/pass1.gif');
+    //background-image: url('img/pass1.gif');
 }
 .pass2 {
     background-color: grey;
-    background-image: url('img/pass2.gif');
+    //background-image: url('img/pass2.gif');
     cursor: default;
 }
 .whitewins {
@@ -179,12 +178,12 @@ body {
     text-align: right;
 }
 .dragheader {
-    width: 50%;
-    margin-left: 30%;
+    width: 450px;
+    margin-left: 170px;
 }
 .dragbody {
-    width: 90%;
-    height: 90%;
+    width: 450px;
+    height: 450px;
     background-color: gainsboro;
 }
 
@@ -202,4 +201,38 @@ body {
   height: 100%;
   overflow: hidden;
   position: fixed!important;
+}
+
+/**** SPECIAL EFFECTS/ANIMATIONS ****/
+/**** BLINKING ****/
+.blink_me {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 2s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+@-moz-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+@-webkit-keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+@keyframes blinker {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
 }
