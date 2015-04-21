@@ -3,7 +3,7 @@
 angular.module('myApp', ['ngDraggable']).controller('Ctrl', 
 	function ($rootScope,$scope, $log, $timeout, gameService, gameLogic, scaleBodyService, resizeGameAreaService) {
 
-	resizeGameAreaService.setWidthToHeight(1);
+	resizeGameAreaService.setWidthToHeight(0.8);
     var moveAudio = new Audio('audio/move.wav');
     moveAudio.load();
 	
@@ -19,18 +19,24 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
 		var verticalDraggingLine = document.getElementById("verticalDraggingLine");
 		//var clickToDragPiece = document.getElementById("clickToDragPiece");
 		var gameArea = document.getElementById("gameArea");
+		var boardArea = document.getElementById("boardArea");
+		console.log(boardArea);
+		console.log(boardArea.clientWidth);
+		console.log(boardArea.clientHeight);
 		// Center point in gameArea
         var x = clientX - gameArea.offsetLeft;
-        var y = clientY - gameArea.offsetTop;
+        var y = clientY - boardArea.offsetTop;
+		console.log("x=" + x);
+		console.log("y=" + y);
 		// Is outside gameArea?
-        if (x < 0 || y < 0 || x >= gameArea.clientWidth || y >= gameArea.clientHeight) {
-          draggingLines.style.display = "none";
+        if (x < 0 || x >= gameArea.clientWidth || y < 0 || y >= gameArea.clientHeight) {
+          draggingLines.style.displagy = "none";
 		  clickToDragPiece.style.display = "none";
           return;
         }
 		// Inside gameArea. Let's find the containing square's row and col
-        var col = Math.floor(colsNum * x / gameArea.clientWidth);
-        var row = Math.floor(rowsNum * y / gameArea.clientHeight);
+        var col = Math.floor(colsNum * x / boardArea.clientWidth);
+        var row = Math.floor(rowsNum * y / boardArea.clientHeight);
 		// if the cell is not empty, don't preview the piece, but still show the dragging lines
 		if ($scope.board[row][col] === 'X' || $scope.board[row][col] === 'O') {
 			return;
@@ -60,17 +66,18 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
 	}
 	function getSquareTopLeft(row, col) {
         var size = getSquareWidthHeight();
-        return {top: row * size.height, left: col * size.width}
+        return {top: document.getElementById("boardArea").offsetTop + row * size.height, left: col * size.width}
     }
 	function getSquareWidthHeight() {
-		var gameArea = document.getElementById("gameArea");
+		var boardArea = document.getElementById("boardArea");
         return {
-          width: gameArea.clientWidth / colsNum,
-          height: gameArea.clientHeight / rowsNum
+          width: boardArea.clientWidth / colsNum,
+          height: boardArea.clientHeight / rowsNum
         };
     }
     function getSquareCenterXY(row, col) {
         var size = getSquareWidthHeight();
+		var boardArea = document.getElementById("boardArea");
         return {
 			x: col * size.width + size.width / 2,
 			y: row * size.height + size.height / 2

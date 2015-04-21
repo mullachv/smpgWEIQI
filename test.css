@@ -50,5 +50,14 @@
     background-position: center; 
 }
 .grid{
-	border: 1pt solid black
+	border: 1pt solid white
+}
+#blackInfo{
+	background-color: black;
+	font-size: 100%;
+	text-align: center;
+	color:white;
+}
+.h1{
+	font-size:100%;
 }
