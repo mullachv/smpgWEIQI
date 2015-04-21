@@ -1,0 +1,54 @@
+#board{
+	background-image: url("img/board.png");
+	background-repeat: no-repeat;
+    background-position: center;
+}
+.middle{
+	background-image: url("img/board_middle.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.top{
+	background-image: url("img/board_top.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+
+.bottom{
+	background-image: url("img/board_bottom.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.left{
+	background-image: url("img/board_left.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.right{
+	background-image: url("img/board_right.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.top_left{
+	background-image: url("img/board_top_left.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.top_right{
+	background-image: url("img/board_top_right.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.bottom_left{
+	background-image: url("img/board_bottom_left.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.bottom_right{
+	background-image: url("img/board_bottom_right.png");
+	background-repeat: no-repeat;
+    background-position: center; 
+}
+.grid{
+	border: 1pt solid black
+}

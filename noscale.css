@@ -12,12 +12,7 @@
   width: 450px;
 }
 
-body {
-  margin: 0px;
-  padding: 0px;
-  overflow: hidden;
-  background-color: black;
-}
+
 .cell {
     
   text-align:center;

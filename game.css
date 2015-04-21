@@ -1,6 +1,6 @@
 #gotable {
   border-collapse: collapse;
-  background-color: black;
+  background-color: white;
   background-image: url('img/board.png');
   /*background-size: cover;*/
   background-size: 80%;
@@ -18,7 +18,7 @@ body {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
-  background-color: black;
+  background-color: white;
 }
 .cell {
     
