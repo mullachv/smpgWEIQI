@@ -277,7 +277,7 @@ angular.module('myApp').service('gameLogic', function () {
         if (setnumAfter < setnumBefore)
             throw Error ('you can not suicide.');
 
-        if (angular.equals (boardbeforeMove, boardAfterMove))
+        if (angular.equals (boardbeforeMove, boardAfterMove) && passes === 0)
             throw Error ("don’t allow a move that brings the game back to stateBeforeMove.");
 
         var firstOperation; // Either endMatchScores or setTurn
