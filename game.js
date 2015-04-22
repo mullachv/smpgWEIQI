@@ -7,9 +7,32 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
     var moveAudio = new Audio('audio/move.wav');
     moveAudio.load();
 	
+
+
 	/*global variables*/
-	var rowsNum = 9;
-    var colsNum = 9;
+
+    $scope.numberOfRowsAndCols = 9;
+    $scope.boardSrc = 'img/board.png';
+    
+    if (window.location.search === '?boardSize=9') {
+        $scope.numberOfRowsAndCols = 9;
+        $scope.boardSrc = 'img/board.png';
+    }
+
+    if (window.location.search === '?boardSize=19') {
+        $scope.numberOfRowsAndCols = 19;
+        $scope.boardSrc = 'img/board_19x19_2.png';
+    }
+    var rowsNum = $scope.numberOfRowsAndCols;
+    var colsNum = $scope.numberOfRowsAndCols;
+
+    $scope.getIntegersTill = function (number) {
+        var res = [];
+        for (var i = 0; i < number; i++) {
+          res.push(i);
+        }
+        return res;
+      }
 	/*global variables*/
 	window.handleDragEvent = handleDragEvent;
 	function handleDragEvent(type, clientX, clientY){

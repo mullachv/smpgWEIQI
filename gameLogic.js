@@ -2,9 +2,19 @@
 
 angular.module('myApp').service('gameLogic', function () {
 
-    var dim = 9; // size of weiqi table
+    
+    var dim = 9; //$scope.numberOfRowsAndCols; // size of weiqi table
     // AngularJS isEqual code
     // https://docs.angularjs.org/api/ng/function/angular.equals
+    
+    if (window.location.search === '?boardSize=9') {
+        dim = 9;
+    }
+
+    if (window.location.search === '?boardSize=19') {
+        dim = 19;
+    }
+
     function isEqual(object1, object2) {
         return angular.equals(object1, object2)
     }
