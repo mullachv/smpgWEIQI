@@ -28,21 +28,18 @@
     <body ng-cloak ng-controller="Ctrl" class="ng-scope">
         <h1> {{tests}} </h1>
 	<div id="gameArea">
-	<div style="position:absolute;top:80%;left:30%;width:100%;height:20%">
+	<div style="position:absolute;top:80%;left:30%;width:100%;height:20%" id="button">
 		      
                 <img style = "position:absolute;top:0;left:0;height:100%" src = "img/pass.jpg" 
-                     ng-show="passes === 0"
-                     ng-click="passClicked()">
+                     ng-show="passes === 0">
                     
                 
                 <img style = "position:absolute;top:0;left:0;height:100%" src = "img/end.png" 
-                     ng-show="passes === 1"
-                     ng-click="passClicked()">
+                     ng-show="passes === 1">
                     
               
                 <img style = "position:absolute;top:0;left:0;height:100%" src = "img/over.jpg" 
-                     ng-show="passes > 1"
-                     ng-click="passClicked()">
+                     ng-show="passes > 1">
                     
                
 		<!--

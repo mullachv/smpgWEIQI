@@ -48,6 +48,15 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
         var x = clientX - gameArea.offsetLeft;
         var y = clientY - gameArea.offsetTop;
 		// Is outside boardArea?
+		var button = document.getElementById("button");
+		console.log(button);
+		if (x > button.offsetLeft && x < button.offsetLeft + button.clientWidth 
+			&& y > button.offsetTop && y < button.offsetTop + button.clientHeight) {
+			if (type === "touchend" || type === "touchcancel" || type === "touchleave" || type === "mouseup") {
+				$scope.passClicked();
+			}
+			return;
+		}
         if (x < 0 || x >= gameArea.clientWidth || y < 0 || y >= boardArea.clientHeight) {
           draggingLines.style.displagy = "none";
 		  clickToDragPiece.style.display = "none";
