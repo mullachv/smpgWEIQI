@@ -15,6 +15,10 @@ angular.module('myApp').service('gameLogic', function () {
         dim = 19;
     }
 
+    if (window.location.search === '?boardSize=13') {
+        dim = 13;
+    }
+
     function isEqual(object1, object2) {
         return angular.equals(object1, object2)
     }

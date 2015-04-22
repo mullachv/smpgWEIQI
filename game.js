@@ -23,6 +23,11 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
         $scope.numberOfRowsAndCols = 19;
         $scope.boardSrc = 'img/board_19x19_2.png';
     }
+
+        if (window.location.search === '?boardSize=13') {
+        $scope.numberOfRowsAndCols = 13;
+        $scope.boardSrc = 'img/board1313.png';
+    }
     var rowsNum = $scope.numberOfRowsAndCols;
     var colsNum = $scope.numberOfRowsAndCols;
 
