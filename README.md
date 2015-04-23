@@ -3,8 +3,13 @@ smpgWEIQI
 
 An implementation of the Chinese game, Go/Weiqi, for Social Multiplayer Games.
 
-**GAME ID:** 5672749318012928
+The game upgraded from the work of the last semester.
 
-**Platform URL:** http://rshen1993.github.io/GamingPlatform/#/menu?on=AUTO_MATCH,EMAIL_JS_ERRORS&gameId=5672749318012928
+Support for 3 different sizes:
 
-**APK URL:** https://build.phonegap.com/apps/1176521/share
+9 x 9: http://orzzzl.github.io/smpgWEIQI/game.html
+or:    http://orzzzl.github.io/smpgWEIQI/game.html?boardSize=9
+
+13 x 13: http://orzzzl.github.io/smpgWEIQI/game.html?boardSize=13
+
+19 x 19: http://orzzzl.github.io/smpgWEIQI/game.html?boardSize=19
