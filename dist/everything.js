@@ -446,7 +446,8 @@ angular.module('myApp',[]).factory('gameLogic', function () {
     this.getSets = getSets;
     return {isMoveOk: isMoveOk, getInitialBoard: getInitialBoard, createComputerMove: createComputerMove, createMove: createMove};
 });
-;angular.module('myApp').controller('Ctrl',
+;window.touchElementId = "boardArea";
+angular.module('myApp').controller('Ctrl',
     ['$rootScope', '$scope', '$log', '$timeout',
         'gameService', 'gameLogic',
         'resizeGameAreaService',
@@ -506,6 +507,7 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         var y = clientY - gameArea.offsetTop;
 		// Is outside boardArea?
 		var button = document.getElementById("button");
+		/*
 		console.log(button);
 		if (x > button.offsetLeft && x < button.offsetLeft + button.clientWidth 
 			&& y > button.offsetTop && y < button.offsetTop + button.clientHeight) {
@@ -514,6 +516,7 @@ angular.module('myApp',[]).factory('gameLogic', function () {
 			}
 			return;
 		}
+		*/
         if (x < 0 || x >= gameArea.clientWidth || y < 0 || y >= boardArea.clientHeight) {
           draggingLines.style.displagy = "none";
 		  clickToDragPiece.style.display = "none";
