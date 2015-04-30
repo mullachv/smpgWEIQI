@@ -57,6 +57,7 @@ module.exports = function(grunt) {
             'imgs/pass1.gif',
             'imgs/pass2.gif'
           ],
+          network: ['dist/everything.min.js.map', 'dist/everything.js'],
           timestamp: true
         },
         dest: 'game.appcache',
