@@ -240,8 +240,8 @@ angular.module('myApp').controller('Ctrl',
         gameDeveloperEmail: "zhuangzeleng1992@gmail.com",
         minNumberOfPlayers: 2,
         maxNumberOfPlayers: 2,
-        exampleGame: gameLogic.getExampleGame(),
-        riddles: gameLogic.getRiddles(),
+        // exampleGame: gameLogic.getExampleGame(),
+        // riddles: gameLogic.getRiddles(),
         isMoveOk: gameLogic.isMoveOk,
         updateUI: updateUI
     });

@@ -278,7 +278,7 @@ angular.module('myApp',[]).factory('gameLogic', function () {
 
         setnumAfter = getboardNum (boardAfterMove, turnIndexBeforeMove);
 
-        if (setnumAfter < setnumBefore)
+        if (setnumAfter <= setnumBefore && setnumAfter > 0)
             throw Error ('you can not suicide.');
 
         if (angular.equals (boardbeforeMove, boardAfterMove) && passes === 0)
@@ -384,67 +384,67 @@ angular.module('myApp',[]).factory('gameLogic', function () {
     }
 
     // Simple game that shows a capture
-    function getExampleGame() {
-        return getExampleMoves(0, {}, [
-            {row: 0, col: 0, comment: "Black always starts. Starting at the corner is not usually a good idea because you have only 2 liberties available."},
-            {row: 0, col: 1, comment: "White places a stone next to black. Black still has one liberty at [1,0] so it is not captured."},
-            {row: 1, col: 1, comment: "Black now covers 2 of the white stone's liberties. The white stone still has one liberty at [0,2]."},
-            {row: 1, col: 2, comment: "White makes a poor move."},
-            {row: 0, col: 2, comment: "Black captures White's first stone by covering all its possible liberties."},
-            {row: -1, col: -1, comment: "White passes its turn by not playing. However, 2 consecutive passes are required to end a game."},
-            {row: 2, col: 2, comment: "Black can play anyway and continue the game."},
-            {row: -1, col: -1, comment: "White passes its turn again by not playing."},
-            {row: -1, col: -1, comment: "Black agrees to end the game by passing its turn."}
-        ]);
-    }
-    // A few riddles, even though game is not really deterministic
-    function getRiddles() {
-        var board1 = createNewBoard();
-        board1[0, 1] = 'O';
-        board1[1] = ['X', 'X', 'O', 'X', '', '', '', '', ''];
-        board1[2] = ['', 'O', 'X', 'O', '', '', '', '', ''];
+    // function getExampleGame() {
+    //     return getExampleMoves(0, {}, [
+    //         {row: 0, col: 0, comment: "Black always starts. Starting at the corner is not usually a good idea because you have only 2 liberties available."},
+    //         {row: 0, col: 1, comment: "White places a stone next to black. Black still has one liberty at [1,0] so it is not captured."},
+    //         {row: 1, col: 1, comment: "Black now covers 2 of the white stone's liberties. The white stone still has one liberty at [0,2]."},
+    //         {row: 1, col: 2, comment: "White makes a poor move."},
+    //         {row: 0, col: 2, comment: "Black captures White's first stone by covering all its possible liberties."},
+    //         {row: -1, col: -1, comment: "White passes its turn by not playing. However, 2 consecutive passes are required to end a game."},
+    //         {row: 2, col: 2, comment: "Black can play anyway and continue the game."},
+    //         {row: -1, col: -1, comment: "White passes its turn again by not playing."},
+    //         {row: -1, col: -1, comment: "Black agrees to end the game by passing its turn."}
+    //     ]);
+    // }
+    // // A few riddles, even though game is not really deterministic
+    // function getRiddles() {
+    //     var board1 = createNewBoard();
+    //     board1[0, 1] = 'O';
+    //     board1[1] = ['X', 'X', 'O', 'X', '', '', '', '', ''];
+    //     board1[2] = ['', 'O', 'X', 'O', '', '', '', '', ''];
 
-        var board2 = createNewBoard();
-        board2[0, 1] = 'O';
-        board2[1] = ['O', 'X', 'O', '', '', '', '', '', ''];
-        board2[2] = ['O', 'X', 'O', '', '', '', '', '', ''];
+    //     var board2 = createNewBoard();
+    //     board2[0, 1] = 'O';
+    //     board2[1] = ['O', 'X', 'O', '', '', '', '', '', ''];
+    //     board2[2] = ['O', 'X', 'O', '', '', '', '', '', ''];
 
-        return [
-            getExampleMoves(0,
-                    {
-                        board: board1,
-                        delta: {row: 2, col: 3},
-                        captured: {black: 0, white: 0},
-                        passes: 0
-                    },
-            [
-                {row: 0, col: 2, comment: "Find the position for Black that will capture a white piece."}
-            ]
-                    ),
-            getExampleMoves(0,
-                    {
-                        board: board2,
-                        delta: {row: 2, col: 2},
-                        captured: {black: 0, white: 0},
-                        passes: 0
-                    },
-            [
-                {row: 3, col: 1, comment: "Find the position for Black that will prevent white from capturing it in its next move."}
-            ]
-                    )
-        ];
-    }
+    //     return [
+    //         getExampleMoves(0,
+    //                 {
+    //                     board: board1,
+    //                     delta: {row: 2, col: 3},
+    //                     captured: {black: 0, white: 0},
+    //                     passes: 0
+    //                 },
+    //         [
+    //             {row: 0, col: 2, comment: "Find the position for Black that will capture a white piece."}
+    //         ]
+    //                 ),
+    //         getExampleMoves(0,
+    //                 {
+    //                     board: board2,
+    //                     delta: {row: 2, col: 2},
+    //                     captured: {black: 0, white: 0},
+    //                     passes: 0
+    //                 },
+    //         [
+    //             {row: 3, col: 1, comment: "Find the position for Black that will prevent white from capturing it in its next move."}
+    //         ]
+    //                 )
+    //     ];
+    // }
 
 
     this.isMoveOk = isMoveOk;
-    this.getExampleGame = getExampleGame;
-    this.getRiddles = getRiddles;
+    // this.getExampleGame = getExampleGame;
+    // this.getRiddles = getRiddles;
     this.getInitialBoard = getInitialBoard;
     this.createMove = createMove;
     this.createComputerMove = createComputerMove;
     
     this.getSets = getSets;
-    return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles, getInitialBoard: getInitialBoard, createComputerMove: createComputerMove, createMove: createMove};
+    return {isMoveOk: isMoveOk, getInitialBoard: getInitialBoard, createComputerMove: createComputerMove, createMove: createMove};
 });
 ;angular.module('myApp').controller('Ctrl',
     ['$rootScope', '$scope', '$log', '$timeout',
@@ -688,8 +688,8 @@ angular.module('myApp',[]).factory('gameLogic', function () {
         gameDeveloperEmail: "zhuangzeleng1992@gmail.com",
         minNumberOfPlayers: 2,
         maxNumberOfPlayers: 2,
-        exampleGame: gameLogic.getExampleGame(),
-        riddles: gameLogic.getRiddles(),
+        // exampleGame: gameLogic.getExampleGame(),
+        // riddles: gameLogic.getRiddles(),
         isMoveOk: gameLogic.isMoveOk,
         updateUI: updateUI
     });
