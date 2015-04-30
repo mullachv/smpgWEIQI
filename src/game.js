@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('myApp', ['ngDraggable']).controller('Ctrl', 
-	function ($rootScope,$scope, $log, $timeout, gameService, gameLogic, scaleBodyService, resizeGameAreaService) {
+angular.module('myApp', []).controller('Ctrl', 
+	function ($rootScope,$scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService) {
 
 	resizeGameAreaService.setWidthToHeight(0.8);
     var moveAudio = new Audio('audio/move.wav');
