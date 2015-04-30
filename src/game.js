@@ -1,3 +1,4 @@
+window.touchElementId = "boardArea";
 angular.module('myApp').controller('Ctrl',
     ['$rootScope', '$scope', '$log', '$timeout',
         'gameService', 'gameLogic',
@@ -58,6 +59,7 @@ angular.module('myApp').controller('Ctrl',
         var y = clientY - gameArea.offsetTop;
 		// Is outside boardArea?
 		var button = document.getElementById("button");
+		/*
 		console.log(button);
 		if (x > button.offsetLeft && x < button.offsetLeft + button.clientWidth 
 			&& y > button.offsetTop && y < button.offsetTop + button.clientHeight) {
@@ -66,6 +68,7 @@ angular.module('myApp').controller('Ctrl',
 			}
 			return;
 		}
+		*/
         if (x < 0 || x >= gameArea.clientWidth || y < 0 || y >= boardArea.clientHeight) {
           draggingLines.style.displagy = "none";
 		  clickToDragPiece.style.display = "none";
