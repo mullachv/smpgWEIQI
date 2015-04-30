@@ -83,7 +83,7 @@
     //height: 100px;
     //background: rgba(53, 53, 53, 1);
     //border: 3px solid black;
-    background-image: url('img/X.gif');
+    background-image: url('imgs/X.gif');
     background-size: cover;
     background-repeat: no-repeat;
     width: 90%;
@@ -96,7 +96,7 @@
     //height: 75%;
     //background: rgba(241, 241, 241, 1);
     //border: 3px solid gray;
-    background-image: url('img/O.gif');
+    background-image: url('imgs/O.gif');
     background-size: cover;
     background-repeat: no-repeat;
     width: 90%;
@@ -147,15 +147,15 @@
 }
 .pass0 {
     background-color: green;
-    //background-image: url('img/pass0.gif');
+    //background-image: url('imgs/pass0.gif');
 }
 .pass1 {
     background-color: darkred;
-    //background-image: url('img/pass1.gif');
+    //background-image: url('imgs/pass1.gif');
 }
 .pass2 {
     background-color: grey;
-    //background-image: url('img/pass2.gif');
+    //background-image: url('imgs/pass2.gif');
     cursor: default;
 }
 .whitewins {

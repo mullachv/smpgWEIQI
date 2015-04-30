@@ -464,21 +464,21 @@ angular.module('myApp',[]).factory('gameLogic', function () {
 	/*global variables*/
 
     $scope.numberOfRowsAndCols = 19;
-    $scope.boardSrc = 'img/board_19x19_2.png';
+    $scope.boardSrc = 'imgs/board_19x19_2.png';
     
     if (window.location.search === '?boardSize=9') {
         $scope.numberOfRowsAndCols = 9;
-        $scope.boardSrc = 'img/board.png';
+        $scope.boardSrc = 'imgs/board.png';
     }
 
     if (window.location.search === '?boardSize=19') {
         $scope.numberOfRowsAndCols = 19;
-        $scope.boardSrc = 'img/board_19x19_2.png';
+        $scope.boardSrc = 'imgs/board_19x19_2.png';
     }
 
         if (window.location.search === '?boardSize=13') {
         $scope.numberOfRowsAndCols = 13;
-        $scope.boardSrc = 'img/board1313.png';
+        $scope.boardSrc = 'imgs/board1313.png';
     }
     var rowsNum = $scope.numberOfRowsAndCols;
     var colsNum = $scope.numberOfRowsAndCols;
@@ -685,7 +685,7 @@ angular.module('myApp',[]).factory('gameLogic', function () {
     //scaleBodyService.scaleBody({width: 450, height: 500});
     
     gameService.setGame({
-        gameDeveloperEmail: "vangie.shue@gmail.com",
+        gameDeveloperEmail: "zhuangzeleng1992@gmail.com",
         minNumberOfPlayers: 2,
         maxNumberOfPlayers: 2,
         exampleGame: gameLogic.getExampleGame(),

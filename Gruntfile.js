@@ -26,8 +26,6 @@ module.exports = function(grunt) {
       my_target: {
         files: {
           'dist/everything.min.js': ['dist/everything.js'],
-          'dist/gameLogic.min.js': ['src/gameLogic.js'],
-          'dist/game.min.js': ['src/game.js']
         }
       }
     },
@@ -50,14 +48,14 @@ module.exports = function(grunt) {
             'dist/everything.min.js',
             'game.css',
             'test.css',
-            'img/board_19x19_2.png',
-            'img/board.png',
-            'img/board1313.png',
-            'img/O.gif',
-            'img/X.gif',
-            'img/pass0.gif',
-            'img/pass1.gif',
-            'img/pass2.gif'
+            'imgs/board_19x19_2.png',
+            'imgs/board.png',
+            'imgs/board1313.png',
+            'imgs/O.gif',
+            'imgs/X.gif',
+            'imgs/pass0.gif',
+            'imgs/pass1.gif',
+            'imgs/pass2.gif'
           ],
           timestamp: true
         },
