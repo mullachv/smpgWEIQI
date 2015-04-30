@@ -1,7 +1,11 @@
-'use strict';
+angular.module('myApp').controller('Ctrl',
+    ['$rootScope', '$scope', '$log', '$timeout',
+        'gameService', 'gameLogic',
+        'resizeGameAreaService',
+        function ($rootScope, $scope, $log, $timeout,
+                  gameService, gameLogic, resizeGameAreaService) {
 
-angular.module('myApp', []).controller('Ctrl', 
-	function ($rootScope,$scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService) {
+    'use strict';        
 
 	resizeGameAreaService.setWidthToHeight(0.8);
     var moveAudio = new Audio('audio/move.wav');
@@ -11,8 +15,8 @@ angular.module('myApp', []).controller('Ctrl',
 
 	/*global variables*/
 
-    $scope.numberOfRowsAndCols = 9;
-    $scope.boardSrc = 'img/board.png';
+    $scope.numberOfRowsAndCols = 19;
+    $scope.boardSrc = 'img/board_19x19_2.png';
     
     if (window.location.search === '?boardSize=9') {
         $scope.numberOfRowsAndCols = 9;
@@ -241,4 +245,4 @@ angular.module('myApp', []).controller('Ctrl',
         isMoveOk: gameLogic.isMoveOk,
         updateUI: updateUI
     });
-});
+}]);

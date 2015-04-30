@@ -1,9 +1,9 @@
-'use strict'; //prints error as opposed to ignoring silently
+angular.module('myApp',[]).factory('gameLogic', function () {
 
-angular.module('myApp').service('gameLogic', function () {
+    'use strict';
 
     
-    var dim = 9; //$scope.numberOfRowsAndCols; // size of weiqi table
+    var dim = 19; //$scope.numberOfRowsAndCols; // size of weiqi table
     // AngularJS isEqual code
     // https://docs.angularjs.org/api/ng/function/angular.equals
     
@@ -444,12 +444,16 @@ angular.module('myApp').service('gameLogic', function () {
     this.createComputerMove = createComputerMove;
     
     this.getSets = getSets;
-    //return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles};
+    return {isMoveOk: isMoveOk, getExampleGame: getExampleGame, getRiddles: getRiddles, getInitialBoard: getInitialBoard, createComputerMove: createComputerMove, createMove: createMove};
 });
-;'use strict';
+;angular.module('myApp').controller('Ctrl',
+    ['$rootScope', '$scope', '$log', '$timeout',
+        'gameService', 'gameLogic',
+        'resizeGameAreaService',
+        function ($rootScope, $scope, $log, $timeout,
+                  gameService, gameLogic, resizeGameAreaService) {
 
-angular.module('myApp', ['ngDraggable']).controller('Ctrl', 
-	function ($rootScope,$scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService) {
+    'use strict';        
 
 	resizeGameAreaService.setWidthToHeight(0.8);
     var moveAudio = new Audio('audio/move.wav');
@@ -459,8 +463,8 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
 
 	/*global variables*/
 
-    $scope.numberOfRowsAndCols = 9;
-    $scope.boardSrc = 'img/board.png';
+    $scope.numberOfRowsAndCols = 19;
+    $scope.boardSrc = 'img/board_19x19_2.png';
     
     if (window.location.search === '?boardSize=9') {
         $scope.numberOfRowsAndCols = 9;
@@ -689,4 +693,4 @@ angular.module('myApp', ['ngDraggable']).controller('Ctrl',
         isMoveOk: gameLogic.isMoveOk,
         updateUI: updateUI
     });
-});
+}]);
