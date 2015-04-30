@@ -8,8 +8,8 @@ angular.module('myApp').controller('Ctrl',
     'use strict';        
 
 	resizeGameAreaService.setWidthToHeight(0.8);
-    var moveAudio = new Audio('audio/move.wav');
-    moveAudio.load();
+    // var moveAudio = new Audio('audio/move.wav');
+    // moveAudio.load();
 	
 
 
@@ -151,7 +151,7 @@ angular.module('myApp').controller('Ctrl',
             $scope.passes = 0;
             $scope.notifications = "Nothing was dragged";
         } else {
-            moveAudio.play();
+           // moveAudio.play();
         }
         $scope.isYourTurn = params.turnIndexAfterMove >= 0 &&
                 params.yourPlayerIndex === params.turnIndexAfterMove;

@@ -355,33 +355,33 @@ angular.module('myApp',[]).factory('gameLogic', function () {
     }
 
     // Returns an array of (stateBeforeMove, move, comment)
-    function getExampleMoves(initialTurnIndex, initialState, arrayOfRowColComment) {
-        var exampleMoves = [];
-        var state = initialState;
-        var turnIndex = initialTurnIndex;
-        for (var i = 0; i < arrayOfRowColComment.length; i++) {
-            var rowColComment = arrayOfRowColComment[i];
-            var move = createMove(state.boardbeforeMove, state.board, rowColComment,
-                    state.captured, state.passes, turnIndex
-                    );
-            var stateAfterMove = {board: move[1].set.value,
-                delta: move[2].set.value,
-                captured: move[3].set.value,
-                passes: move[4].set.value
-            };
-            exampleMoves.push({
-                stateBeforeMove: state,
-                stateAfterMove: stateAfterMove,
-                turnIndexBeforeMove: turnIndex,
-                turnIndexAfterMove: 1 - turnIndex,
-                move: move,
-                comment: {end: rowColComment.comment}
-            });
-            state = stateAfterMove;
-            turnIndex = 1 - turnIndex;
-        }
-        return exampleMoves;
-    }
+    // function getExampleMoves(initialTurnIndex, initialState, arrayOfRowColComment) {
+    //     var exampleMoves = [];
+    //     var state = initialState;
+    //     var turnIndex = initialTurnIndex;
+    //     for (var i = 0; i < arrayOfRowColComment.length; i++) {
+    //         var rowColComment = arrayOfRowColComment[i];
+    //         var move = createMove(state.boardbeforeMove, state.board, rowColComment,
+    //                 state.captured, state.passes, turnIndex
+    //                 );
+    //         var stateAfterMove = {board: move[1].set.value,
+    //             delta: move[2].set.value,
+    //             captured: move[3].set.value,
+    //             passes: move[4].set.value
+    //         };
+    //         exampleMoves.push({
+    //             stateBeforeMove: state,
+    //             stateAfterMove: stateAfterMove,
+    //             turnIndexBeforeMove: turnIndex,
+    //             turnIndexAfterMove: 1 - turnIndex,
+    //             move: move,
+    //             comment: {end: rowColComment.comment}
+    //         });
+    //         state = stateAfterMove;
+    //         turnIndex = 1 - turnIndex;
+    //     }
+    //     return exampleMoves;
+    // }
 
     // Simple game that shows a capture
     // function getExampleGame() {
@@ -456,8 +456,8 @@ angular.module('myApp',[]).factory('gameLogic', function () {
     'use strict';        
 
 	resizeGameAreaService.setWidthToHeight(0.8);
-    var moveAudio = new Audio('audio/move.wav');
-    moveAudio.load();
+    // var moveAudio = new Audio('audio/move.wav');
+    // moveAudio.load();
 	
 
 
@@ -599,7 +599,7 @@ angular.module('myApp',[]).factory('gameLogic', function () {
             $scope.passes = 0;
             $scope.notifications = "Nothing was dragged";
         } else {
-            moveAudio.play();
+           // moveAudio.play();
         }
         $scope.isYourTurn = params.turnIndexAfterMove >= 0 &&
                 params.yourPlayerIndex === params.turnIndexAfterMove;
