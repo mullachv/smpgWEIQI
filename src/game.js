@@ -43,7 +43,7 @@ angular.module('myApp').controller('Ctrl',
         }
         return res;
       }
-	dragAndDropService.addDragListener("gameArea", handleDragEvent);
+	dragAndDropService.addDragListener("boardArea", handleDragEvent);
 	function handleDragEvent(type, clientX, clientY){
 		
 		var draggingLines = document.getElementById("draggingLines");
