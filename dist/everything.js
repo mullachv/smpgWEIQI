@@ -1,4 +1,4 @@
-angular.module('myApp',[]).factory('gameLogic', function () {
+angular.module('myApp',['ngTouch', 'ui.bootstrap']).factory('gameLogic', function () {
 
     'use strict';
 
@@ -450,9 +450,9 @@ angular.module('myApp',[]).factory('gameLogic', function () {
 angular.module('myApp').controller('Ctrl',
     ['$rootScope', '$scope', '$log', '$timeout',
         'gameService', 'gameLogic',
-        'resizeGameAreaService',
+        'resizeGameAreaService','dragAndDropService',
         function ($rootScope, $scope, $log, $timeout,
-                  gameService, gameLogic, resizeGameAreaService) {
+                  gameService, gameLogic, resizeGameAreaService,dragAndDropService) {
 
     'use strict';        
 
@@ -491,8 +491,7 @@ angular.module('myApp').controller('Ctrl',
         }
         return res;
       }
-	/*global variables*/
-	window.handleDragEvent = handleDragEvent;
+	dragAndDropService.addDragListener("gameArea", handleDragEvent);
 	function handleDragEvent(type, clientX, clientY){
 		
 		var draggingLines = document.getElementById("draggingLines");
