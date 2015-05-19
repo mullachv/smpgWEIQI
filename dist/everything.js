@@ -558,8 +558,8 @@ angular.module('myApp').controller('Ctrl',
 	function getSquareWidthHeight() {
 		var boardArea = document.getElementById("boardArea");
         return {
-          width: boardArea.clientWidth / colsNum,
-          height: boardArea.clientHeight / rowsNum
+          width: boardArea.clientWidth / (colsNum),
+          height: boardArea.clientHeight / (rowsNum)
         };
     }
     function getSquareCenterXY(row, col) {
