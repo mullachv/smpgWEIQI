@@ -459,7 +459,6 @@ angular.module('myApp').controller('Ctrl',
 	resizeGameAreaService.setWidthToHeight(0.8);
     // var moveAudio = new Audio('audio/move.wav');
     // moveAudio.load();
-	
     $scope.getButtonValue = function() {
         switch ($scope.passes) {
             case 0: return 'PASS';
@@ -470,7 +469,11 @@ angular.module('myApp').controller('Ctrl',
     }
 
 	/*global variables*/
+    var computerTurn;
 
+    $scope.hidePassButton = function() {
+        return computerTurn;
+    }
     $scope.numberOfRowsAndCols = 19;
     $scope.boardSrc = 'imgs/board_19x19_2.png';
     
@@ -621,8 +624,11 @@ angular.module('myApp').controller('Ctrl',
         // Is it the computer's turn?
         if ($scope.isYourTurn && params.playersInfo[params.yourPlayerIndex].playerId === '') {
             // Wait 500ms for animation to end
+             computerTurn = true;
             $timeout(sendComputerMove, 1000);
+            return;
         }
+        computerTurn = false;
     }
 
     // Before updateUI, show an empty board to viewer (so you can't perform moves)
