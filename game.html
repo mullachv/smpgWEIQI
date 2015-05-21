@@ -113,7 +113,8 @@
     </div>
 </div>
     <div id="gameArea">
-    <div style="position:absolute;top:80%;left:30%;width:100%;height:20%" id="button">
+    
+        <!--
               
                 <img style = "position:absolute;top:0;left:0;height:100%" ng-src = "imgs/pass0.gif" 
                      ng-show="passes === 0"
@@ -128,9 +129,10 @@
                 <img style = "position:absolute;top:0;left:0;height:100%" ng-src = "imgs/pass2.gif" 
                      ng-show="passes > 1"
 					 ng-click="passClicked()">
+        -->
                     
                
-    </div>
+    
 
     <div style="position:absolute;top:0%;left:0;width:100%;height:80%" id = "boardArea">
         <svg id="draggingLines" width="100%" height="100%"
@@ -163,6 +165,10 @@
             </div>
         </div>
     </div>
+    <div style = "position:absolute;top:80%; left:0;width:100%; height:20%" id = "buttonArea">
+        <button type = "button" ng-click = "passClicked()" class="btn btn-primary btn-lg btn-block">{{ getButtonValue() | translate }}</button>
+    </div>
+        
 
 
     </div>

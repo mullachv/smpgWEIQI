@@ -12,7 +12,14 @@ angular.module('myApp').controller('Ctrl',
     // var moveAudio = new Audio('audio/move.wav');
     // moveAudio.load();
 	
-
+    $scope.getButtonValue = function() {
+        switch ($scope.passes) {
+            case 0: return 'PASS';
+            case 1: return 'END_MATCH';
+            case 2: return 'GAME_OVER';
+            default: return 'PASS';
+        }
+    }
 
 	/*global variables*/
 
