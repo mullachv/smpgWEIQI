@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- build:[manifest] game.appcache -->
-<html lang="zh" ng-app="myApp" ng-strict-di>
+<html lang="en" ng-app="myApp" ng-strict-di>
 <!-- /build -->
     <head>
         <meta charset="utf-8">
@@ -33,7 +33,7 @@
         <script crossorigin="anonymous" src="src/game.js"></script>
         <!-- /build -->
 
-        <script>window.angularTranslationLanguages = ['zh', 'en'];</script>
+        <script>window.angularTranslationLanguages = ['en', 'zh'];</script>
 
         <!-- build:js http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js -->
         <script crossorigin="anonymous" src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.js"></script>
@@ -43,7 +43,7 @@
         <link rel="stylesheet" type="text/css" href="game.css">
         <link rel="stylesheet" type="text/css" href="test.css"> 
         
-        <title>{{ 'TITLE' | translate }}</title>
+        <title>Go/weiqi</title>
     </head>
     <body ng-cloak ng-controller="Ctrl" class="ng-scope">
 
@@ -186,8 +186,5 @@
         <button type = "button" ng-click = "passClicked()" class="btn btn-primary btn-lg btn-block">{{ getButtonValue() | translate }}</button>
     </div>
     </div>
-    <script>
-    document.title = {{ 'TITLE' | translate }};
-    </script>
     </body>
 </html>
