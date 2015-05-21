@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp" ng-strict-di manifest="game.appcache">
+<html lang="zh" ng-app="myApp" ng-strict-di manifest="game.appcache">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <title>Weiqi</title>
         <meta name="description" content="Simple WEIQI in a scalable UI">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -19,14 +18,15 @@
 
          <script src="dist/everything.min.js"></script>
 
-        <script>window.angularTranslationLanguages = ['en', 'zh'];</script>
+        <script>window.angularTranslationLanguages = ['zh', 'en'];</script>
 
         <script src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js"></script>
  
         <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">        
         <link rel="stylesheet" type="text/css" href="game.css">
         <link rel="stylesheet" type="text/css" href="test.css"> 
-
+        
+        <title>{{ 'TITLE' | translate }}</title>
     </head>
     <body ng-cloak ng-controller="Ctrl" class="ng-scope">
 
@@ -168,9 +168,9 @@
     <div style = "position:absolute;top:80%; left:0;width:100%; height:20%" id = "buttonArea" ng-hide = "hidePassButton()">
         <button type = "button" ng-click = "passClicked()" class="btn btn-primary btn-lg btn-block">{{ getButtonValue() | translate }}</button>
     </div>
-        
-
-
     </div>
+    <script>
+    document.title = {{ 'TITLE' | translate }};
+    </script>
     </body>
 </html>
