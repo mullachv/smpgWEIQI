@@ -54,11 +54,6 @@ module.exports = function(grunt) {
             'languages/zh.js',
             'game.css',
             'test.css',
-            'imgs/board_19x19_2.png',
-            'imgs/board.png',
-            'imgs/board1313.png',
-            'imgs/O.gif',
-            'imgs/X.gif',
             'imgs/pass0.gif',
             'imgs/pass1.gif',
             'imgs/pass2.gif'
