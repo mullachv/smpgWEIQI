@@ -500,6 +500,9 @@ angular.module('myApp').controller('Ctrl',
       }
 	dragAndDropService.addDragListener("boardArea", handleDragEvent);
 	function handleDragEvent(type, clientX, clientY){
+        if ($scope.passes === 2) {
+            return; // if the game is over, do not display dragging effect
+        }
 		
 		var draggingLines = document.getElementById("draggingLines");
 		var horizontalDraggingLine = document.getElementById("horizontalDraggingLine");
