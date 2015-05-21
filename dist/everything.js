@@ -503,7 +503,7 @@ angular.module('myApp').controller('Ctrl',
       }
 	dragAndDropService.addDragListener("boardArea", handleDragEvent);
 	function handleDragEvent(type, clientX, clientY){
-        if ($scope.passes === 2) {
+        if ($scope.passes === 2 || computerTurn) {
             return; // if the game is over, do not display dragging effect
         }
 		
