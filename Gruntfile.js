@@ -54,9 +54,8 @@ module.exports = function(grunt) {
             'languages/zh.js',
             'game.css',
             'test.css',
-            'imgs/pass0.gif',
-            'imgs/pass1.gif',
-            'imgs/pass2.gif'
+            'imgs/O.gif',
+            'imgs/X.gif'
           ],
           network: ['dist/everything.min.js.map', 'dist/everything.js'],
           timestamp: true
