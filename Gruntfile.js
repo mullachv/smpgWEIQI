@@ -15,7 +15,9 @@ module.exports = function(grunt) {
       },
     dist: {
         // Order is important! gameLogic.js must be first because it defines myApp angular module.
-        src: ['src/gameLogic.js', 'src/game.js'],
+        src: [
+        'ts_output_readonly_do_NOT_change_manually/src/gameLogic.js',
+        'ts_output_readonly_do_NOT_change_manually/src/game.js'],
         dest: 'dist/everything.js',
       },
              },
