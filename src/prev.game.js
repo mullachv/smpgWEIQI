@@ -1,12 +1,31 @@
 window.touchElementId = "boardArea";
-angular.module('myApp').controller('Ctrl',
-    ['$rootScope', '$scope', '$log', '$timeout',
-        'gameService', 'gameLogic',
-        'resizeGameAreaService','dragAndDropService',
-        function ($rootScope, $scope, $log, $timeout,
-                  gameService, gameLogic, resizeGameAreaService,dragAndDropService) {
+// angular.module('myApp').controller('Ctrl',
+//     ['$rootScope', '$scope', '$log', '$timeout',
+//         'gameService', 'gameLogic',
+//         'resizeGameAreaService','dragAndDropService',
+//         function ($rootScope, $scope, $log, $timeout,
+//                   gameService, gameLogic, resizeGameAreaService,dragAndDropService) {
 
-    'use strict';        
+angular.module('myApp')
+.run(['gameLogic',
+        function (gameLogic) {
+
+    'use strict';
+    var $log = log;
+    var $scope = $rootScope;
+    var $translate = translate;
+
+    translate.setLanguage('en',{
+    RULES_OF_GO:"New to GO?",
+    RULES_SLIDE1:"There are essentially only two rules in GO",
+    RULES_SLIDE2:"Rule 1 (the rule of liberty) states that every stone remaining on the board must have at least one open \"point\" (an intersection, called a \"liberty\") directly next to it (up, down, left, or right)",
+    RULES_SLIDE3:"Stones or groups of stones which lose their last liberty are removed from the board.",
+    RULES_SLIDE4:"Rule 2 (the \"ko rule\") states that the stones on the board must never repeat a previous position of stones. Moves which would do so are forbidden, and thus only moves elsewhere on the board are permitted that turn.",
+    PASS:"PASS",
+    END_MATCH:"END MATCH",
+    GAME_OVER:"GAME OVER",
+    CLOSE:"Close"
+    });
 
 	resizeGameAreaService.setWidthToHeight(0.8);
     // var moveAudio = new Audio('audio/move.wav');
@@ -28,7 +47,7 @@ angular.module('myApp').controller('Ctrl',
     }
     $scope.numberOfRowsAndCols = 19;
     $scope.boardSrc = 'imgs/board_19x19_2.png';
-    
+
     if (window.location.search === '?boardSize=9') {
         $scope.numberOfRowsAndCols = 9;
         $scope.boardSrc = 'imgs/board.png';
@@ -58,14 +77,14 @@ angular.module('myApp').controller('Ctrl',
         if ($scope.passes === 2 || computerTurn) {
             return; // if the game is over, do not display dragging effect
         }
-		
+
 		var draggingLines = document.getElementById("draggingLines");
 		var horizontalDraggingLine = document.getElementById("horizontalDraggingLine");
 		var verticalDraggingLine = document.getElementById("verticalDraggingLine");
 		//var clickToDragPiece = document.getElementById("clickToDragPiece");
 		var gameArea = document.getElementById("gameArea");
 		var boardArea = document.getElementById("boardArea");
-		
+
 		// Center point in gameArea
         var x = clientX - gameArea.offsetLeft;
         var y = clientY - gameArea.offsetTop;
@@ -73,7 +92,7 @@ angular.module('myApp').controller('Ctrl',
 		var button = document.getElementById("button");
 		/*
 		console.log(button);
-		if (x > button.offsetLeft && x < button.offsetLeft + button.clientWidth 
+		if (x > button.offsetLeft && x < button.offsetLeft + button.clientWidth
 			&& y > button.offsetTop && y < button.offsetTop + button.clientHeight) {
 			if (type === "touchend" || type === "touchcancel" || type === "touchleave" || type === "mouseup") {
 				$scope.passClicked();
@@ -102,8 +121,8 @@ angular.module('myApp').controller('Ctrl',
         horizontalDraggingLine.setAttribute("y2", centerXY.y);
 		// show the piece
 		//var cell = document.getElementById('board' + row + 'x' + col).className = $scope.turnIndex === 0 ? 'black' : 'white';
-		
-		
+
+
         var topLeft = getSquareTopLeft(row, col);
 		var circle = document.getElementById("circle");
 		circle.setAttribute("fill", $scope.turnIndex === 0 ? 'black' : 'white');
@@ -253,7 +272,7 @@ angular.module('myApp').controller('Ctrl',
         }
       };
     //scaleBodyService.scaleBody({width: 450, height: 500});
-    
+
     gameService.setGame({
         gameDeveloperEmail: "zhuangzeleng1992@gmail.com",
         minNumberOfPlayers: 2,
